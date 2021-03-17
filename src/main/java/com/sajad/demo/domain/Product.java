@@ -1,4 +1,4 @@
-package com.sajad.demo;
+package com.sajad.demo.domain;
 
 import javax.persistence.*;
 import java.util.Set;
@@ -19,6 +19,14 @@ public class Product {
             inverseJoinColumns = @JoinColumn( name="comment_id")
     )
     private Set<Comment> comments;
+
+    @OneToMany
+    @JoinTable(
+            name="product_votes",
+            joinColumns = @JoinColumn( name="product_id"),
+            inverseJoinColumns = @JoinColumn( name="vote_id")
+    )
+    private Set<Vote> votes;
 
     /**
      * The product name
@@ -111,5 +119,13 @@ public class Product {
 
     public void setComments(Set<Comment> comments) {
         this.comments = comments;
+    }
+
+    public Set<Vote> getVotes() {
+        return votes;
+    }
+
+    public void setVotes(Set<Vote> votes) {
+        this.votes = votes;
     }
 }
