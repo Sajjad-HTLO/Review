@@ -5,6 +5,10 @@ import javax.validation.constraints.NotNull;
 
 public class CommentNewDto {
 
+    /**
+     * The comment content.
+     * (We also need to inspect for XSS attack, in future of course!)
+     */
     @NotBlank
     private String content;
 
@@ -16,7 +20,7 @@ public class CommentNewDto {
      * rely on the user identifier passed from the client
      */
     @NotNull
-    private long userId;
+    private Long userId;
 
     public String getContent() {
         return content;
@@ -34,11 +38,11 @@ public class CommentNewDto {
         this.productId = productId;
     }
 
-    public long getUserId() {
+    public Long getUserId() {
         return userId;
     }
 
-    public void setUserId(long userId) {
+    public void setUserId(Long userId) {
         this.userId = userId;
     }
 }

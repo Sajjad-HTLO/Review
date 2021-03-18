@@ -1,7 +1,7 @@
-package com.sajad.demo.service;
+package com.sajad.demo.service.product;
 
-import com.sajad.demo.repository.ProductRepository;
 import com.sajad.demo.domain.Product;
+import com.sajad.demo.repository.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

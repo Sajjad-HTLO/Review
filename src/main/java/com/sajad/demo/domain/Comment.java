@@ -1,8 +1,8 @@
 package com.sajad.demo.domain;
 
-import com.sajad.demo.domain.User;
-
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
+import java.util.Date;
 
 @Entity
 @Table(name = "comment")
@@ -16,7 +16,16 @@ public class Comment {
     @JoinColumn(name = "user_id")
     private User user;
 
+    @NotNull
     private String content;
+
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date date;
+
+    /**
+     * Initial status of the comment.
+     */
+    private CommentVoteStatus status = CommentVoteStatus.PENDING;
 
     public void setId(Long id) {
         this.id = id;
@@ -40,5 +49,22 @@ public class Comment {
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+
+    public Date getDate() {
+        return date;
+    }
+
+    public void setDate(Date date) {
+        this.date = date;
+    }
+
+    public CommentVoteStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(CommentVoteStatus status) {
+        this.status = status;
     }
 }

@@ -14,3 +14,14 @@ spring:
     username: root
     password: Root@200200
     driver-class-name: com.mysql.jdbc.Driver
+
+  jackson:
+    property-naming-strategy: CAMEL_CASE_TO_LOWER_CASE_WITH_UNDERSCORES
+
+#  http:
+#    jackson:
+#      default-property-inclusion: non_null
+#      property-naming-strategy: CAMEL_CASE_TO_LOWER_CASE_WITH_UNDERSCORES
+#      date-format: com.fasterxml.jackson.databind.util.ISO8601DateFormat
+#      deserialization:
+#        READ_UNKNOWN_ENUM_VALUES_AS_NULL: true

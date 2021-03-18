@@ -60,7 +60,6 @@ public class Product {
      */
     private boolean votesVisibleToPublic;
 
-
     public Long getId() {
         return id;
     }

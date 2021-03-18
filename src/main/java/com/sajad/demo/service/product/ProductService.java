@@ -1,4 +1,4 @@
-package com.sajad.demo.service;
+package com.sajad.demo.service.product;
 
 import com.sajad.demo.domain.Product;
 
