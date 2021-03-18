@@ -16,11 +16,15 @@ public class Comment {
     @JoinColumn(name = "user_id")
     private User user;
 
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "product_id")
+    private Product product;
+
     @NotNull
     private String content;
 
     @Temporal(TemporalType.TIMESTAMP)
-    private Date date;
+    private Date date = new Date();
 
     /**
      * Initial status of the comment.
@@ -66,5 +70,13 @@ public class Comment {
 
     public void setStatus(CommentVoteStatus status) {
         this.status = status;
+    }
+
+    public Product getProduct() {
+        return product;
+    }
+
+    public void setProduct(Product product) {
+        this.product = product;
     }
 }

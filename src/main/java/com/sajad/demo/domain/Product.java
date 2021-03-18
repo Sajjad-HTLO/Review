@@ -9,22 +9,22 @@ public class Product {
 
     @Id
     @GeneratedValue
-    @Column(name = "product_id")
+    @Column(name = "id")
     private Long id;
 
-    @OneToMany
+    @OneToMany(cascade = CascadeType.MERGE)
     @JoinTable(
-            name="product_comments",
-            joinColumns = @JoinColumn( name="product_id"),
-            inverseJoinColumns = @JoinColumn( name="comment_id")
+            name = "product_comments",
+            joinColumns = @JoinColumn(name = "id"),
+            inverseJoinColumns = @JoinColumn(name = "comment_id")
     )
     private Set<Comment> comments;
 
     @OneToMany
     @JoinTable(
-            name="product_votes",
-            joinColumns = @JoinColumn( name="product_id"),
-            inverseJoinColumns = @JoinColumn( name="vote_id")
+            name = "product_votes",
+            joinColumns = @JoinColumn(name = "id"),
+            inverseJoinColumns = @JoinColumn(name = "vote_id")
     )
     private Set<Vote> votes;
 
@@ -49,16 +49,16 @@ public class Product {
     private boolean isVotable;
 
     /**
-     * If {@code true} then this products' comments will be visible to the public users,
-     * Otherwise, only the previous buyers can see the comments.
+     * If {@code true} then every user can put comment for this product.
+     * Otherwise, only the previous buyers can put comments.
      */
-    private boolean commentsVisibleToPublic;
+    private boolean commentableToPublic;
 
     /**
-     * If {@code true} then this products' votes will be visible to the public users,
-     * Otherwise, only the previous buyers can see the votes.
+     * If {@code true} then every user can rate for this product.
+     * Otherwise, only the previous buyers can rate.
      */
-    private boolean votesVisibleToPublic;
+    private boolean votableToPublic;
 
     public Long getId() {
         return id;
@@ -96,20 +96,20 @@ public class Product {
         isVotable = votable;
     }
 
-    public boolean isCommentsVisibleToPublic() {
-        return commentsVisibleToPublic;
+    public boolean isCommentableToPublic() {
+        return commentableToPublic;
     }
 
-    public void setCommentsVisibleToPublic(boolean commentsVisibleToPublic) {
-        this.commentsVisibleToPublic = commentsVisibleToPublic;
+    public void setCommentableToPublic(boolean commentsVisibleToPublic) {
+        this.commentableToPublic = commentsVisibleToPublic;
     }
 
-    public boolean isVotesVisibleToPublic() {
-        return votesVisibleToPublic;
+    public boolean isVotableToPublic() {
+        return votableToPublic;
     }
 
-    public void setVotesVisibleToPublic(boolean votesVisibleToPublic) {
-        this.votesVisibleToPublic = votesVisibleToPublic;
+    public void setVotableToPublic(boolean votesVisibleToPublic) {
+        this.votableToPublic = votesVisibleToPublic;
     }
 
     public Set<Comment> getComments() {

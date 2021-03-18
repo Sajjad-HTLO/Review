@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static com.sajad.demo.utility.Constants.PRODUCT_API;
+import static com.sajad.demo.utility.Constants.UrlMappings.*;
 
 @RestController
 @RequestMapping(PRODUCT_API)

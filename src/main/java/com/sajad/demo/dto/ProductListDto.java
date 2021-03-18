@@ -1,6 +1,8 @@
 package com.sajad.demo.dto;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -27,7 +29,7 @@ public class ProductListDto {
     /**
      * Last 3 comments
      */
-    private Set<CommentDto> lastComments = new HashSet<>();
+    private List<CommentDto> comments = new ArrayList<>();
 
     /**
      * Average of given rates for this product
@@ -95,12 +97,12 @@ public class ProductListDto {
         this.commentsCount = commentsCount;
     }
 
-    public Set<CommentDto> getLastComments() {
-        return lastComments;
+    public List<CommentDto> getComments() {
+        return comments;
     }
 
-    public void setLastComments(Set<CommentDto> lastComments) {
-        this.lastComments = lastComments;
+    public void setComments(List<CommentDto> comments) {
+        this.comments = comments;
     }
 
     public boolean isCommentable() {

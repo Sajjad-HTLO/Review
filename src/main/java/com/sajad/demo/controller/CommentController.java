@@ -5,16 +5,18 @@ import com.sajad.demo.converter.CommentConverters;
 import com.sajad.demo.domain.Comment;
 import com.sajad.demo.domain.Product;
 import com.sajad.demo.dto.CommentNewDto;
+import com.sajad.demo.dto.CommentUpdateDto;
 import com.sajad.demo.exception.CommentNotAllowedException;
-import com.sajad.demo.exception.General4XXException;
+import com.sajad.demo.exception.ResourceNotFoundException;
 import com.sajad.demo.service.comment.CommentService;
 import com.sajad.demo.service.product.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.querydsl.binding.QuerydslPredicate;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import static com.sajad.demo.utility.Constants.COMMENTS_API;
+import static com.sajad.demo.utility.Constants.UrlMappings.*;
 
 @RestController
 @RequestMapping(COMMENTS_API)
@@ -55,24 +57,36 @@ public class CommentController {
      * @return 204 status if successful.
      */
     @PostMapping
-    public ResponseEntity newComment(@RequestBody CommentNewDto commentNewDto) throws CommentNotAllowedException {
-        System.out.println();
-        if (true)
-            throw new CommentNotAllowedException();
-
-        Product product = productService.getById(commentNewDto.getProductId()).orElseThrow(General4XXException::new);
-
-        if (!product.isCommentable())
-            throw new CommentNotAllowedException();
+    public ResponseEntity newComment(@Validated @RequestBody CommentNewDto commentNewDto) throws CommentNotAllowedException {
+        Product product = productService.getById(commentNewDto.getProductId()).orElseThrow(ResourceNotFoundException::new);
 
         // Check the privacy of commenting
+        // If the product is commentable to the previous buyers only, complain if the proncipal is
+        // not previously bought this product
+        if (!product.isCommentable() || (!product.isCommentableToPublic() && !commentNewDto.getIsBuyer()))
+            throw new CommentNotAllowedException();
 
-        // We need to find out if the user is a buyer of this product somehow!
-
-
-        // Else, persist the new comment
         Comment newComment = commentConverters.getByNewDto(commentNewDto);
-        commentService.persistNewComment(newComment);
+
+        product.getComments().add(newComment);
+        productService.persistUpdatedProduct(product);
+
+        return ResponseEntity.noContent().build();
+    }
+
+    /**
+     * Update (Approve or Reject) a comment. (By admin)
+     *
+     * @return
+     */
+    @PutMapping("/{id}")
+    public ResponseEntity updateCommentStatus(@PathVariable long id,
+                                              @Validated @RequestBody CommentUpdateDto updateDto) {
+        Comment comment = commentService.getById(id).orElseThrow(ResourceNotFoundException::new);
+
+        comment.setStatus(updateDto.getDecision());
+
+        commentService.persistNewComment(comment);
 
         return ResponseEntity.noContent().build();
     }

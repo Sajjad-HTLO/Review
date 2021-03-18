@@ -10,6 +10,8 @@ import com.sajad.demo.service.product.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.util.Comparator;
+import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -46,7 +48,7 @@ public class ProductConverters {
         if (product.isCommentable()) {
             listDto.setCommentable(true);
 
-            if (product.isCommentsVisibleToPublic())
+            if (product.isCommentableToPublic())
                 listDto.setCommentableToPublic(true);
         }
 
@@ -57,19 +59,21 @@ public class ProductConverters {
         if (product.isVotable()) {
             listDto.setVotable(true);
 
-            if (product.isVotesVisibleToPublic())
+            if (product.isVotableToPublic())
                 listDto.setVotableToPublic(true);
         }
 
-        // Set last 3 verified comments
-        Set<Comment> verifiedComments = product.getComments().stream()
+        // Set last 3 verified comments (SORTED BY DATE)
+        List<Comment> verifiedComments = product.getComments().stream()
                 .filter(comment -> comment.getStatus() == CommentVoteStatus.VERIFIED)
-                .collect(Collectors.toSet());
+                .sorted(Comparator.comparing(Comment::getDate).reversed())
+                .limit(3)
+                .collect(Collectors.toList());
 
-        listDto.setLastComments(
+        listDto.setComments(
                 verifiedComments.stream()
                         .map(CommentConverters::fromComment)
-                        .collect(Collectors.toSet()));
+                        .collect(Collectors.toList()));
 
         // Set verified comments count
         listDto.setCommentsCount(verifiedComments.size());

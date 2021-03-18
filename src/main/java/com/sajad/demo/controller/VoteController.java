@@ -4,7 +4,7 @@ import com.sajad.demo.converter.VoteConverters;
 import com.sajad.demo.domain.Product;
 import com.sajad.demo.domain.Vote;
 import com.sajad.demo.dto.VoteNewDto;
-import com.sajad.demo.exception.General4XXException;
+import com.sajad.demo.exception.ResourceNotFoundException;
 import com.sajad.demo.exception.VoteNotAllowedException;
 import com.sajad.demo.service.product.ProductService;
 import com.sajad.demo.service.vote.VoteService;
@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import static com.sajad.demo.utility.Constants.VOTES_API;
+import static com.sajad.demo.utility.Constants.UrlMappings.*;
 
 @RestController
 @RequestMapping(VOTES_API)
@@ -44,7 +44,7 @@ public class VoteController {
      */
     @PostMapping
     public ResponseEntity newVote(@Validated @RequestBody VoteNewDto newDto) throws VoteNotAllowedException {
-        Product product = productService.getById(newDto.getProductId()).orElseThrow(General4XXException::new);
+        Product product = productService.getById(newDto.getProductId()).orElseThrow(ResourceNotFoundException::new);
 
         /*
         Complain if the product is not votable.

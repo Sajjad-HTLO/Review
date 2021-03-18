@@ -18,9 +18,7 @@ public interface CommentRepository extends JpaRepository<Comment, Long>, Queryds
     @Override
     @SuppressWarnings("unchecked")
     default void customize(QuerydslBindings bindings, QComment comment) {
-
         bindings.bind(comment.status)
                 .first((path, value) -> path.eq(CommentVoteStatus.valueOf(value.name())));
-
     }
 }
