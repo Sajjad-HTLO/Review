@@ -1,9 +1,14 @@
 package com.sajad.demo.service.vote;
 
-import com.sajad.demo.domain.Vote;
+import com.querydsl.core.types.Predicate;
+import com.sajad.demo.domain.Rate;
 import com.sajad.demo.repository.VoteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+
+import java.util.Optional;
 
 @Service
 public class SimpleVoteService implements VoteService {
@@ -16,7 +21,30 @@ public class SimpleVoteService implements VoteService {
     }
 
     @Override
-    public void persistNewVote(Vote newVote) {
-        voteRepository.save(newVote);
+    public Page<Rate> listVotes(Predicate predicate, Pageable pageable) {
+        return voteRepository.findAll(predicate, pageable);
+    }
+
+    @Override
+    public Optional<Rate> getById(long id) {
+        return voteRepository.findById(id);
+    }
+
+    /**
+     * This is used to detect duplicate voting.
+     *
+     * @param userId
+     * @param productId
+     * @return
+     */
+    @Override
+    public Optional<Rate> getByUserIdAndProductId(long userId, long productId) {
+        return voteRepository.findByUserIdAndProductId(userId, productId);
+
+    }
+
+    @Override
+    public void persistNewVote(Rate newRate) {
+        voteRepository.save(newRate);
     }
 }

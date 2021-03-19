@@ -4,12 +4,10 @@ import com.querydsl.core.types.Predicate;
 import com.sajad.demo.domain.Comment;
 import com.sajad.demo.repository.CommentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import javax.transaction.Transactional;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -23,24 +21,18 @@ public class SimpleCommentService implements CommentService {
     }
 
     /**
-     * (We may need pagination as well)
+     * Find all comments based on the given {@code predicate} and {@code pageable}
      *
      * @return
      */
     @Override
-    public List<Comment> allComments(Predicate predicate, Pageable pageable) {
-        List<Comment> result = new ArrayList<>();
-
-        commentRepository.findAll(predicate, pageable)
-                .forEach(result::add);
-
-        return result;
+    public Page<Comment> listComments(Predicate predicate, Pageable pageable) {
+        return commentRepository.findAll(predicate, pageable);
     }
 
     @Override
     public Optional<Comment> getById(long id) {
         return commentRepository.findById(id);
-
     }
 
     @Override

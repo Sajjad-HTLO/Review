@@ -1,11 +1,13 @@
 package com.sajad.demo.service.product;
 
+import com.querydsl.core.types.Predicate;
 import com.sajad.demo.domain.Product;
 import com.sajad.demo.repository.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -30,7 +32,7 @@ public class SimpleProductService implements ProductService {
     }
 
     @Override
-    public List<Product> getProducts() {
-        return productRepository.findAll();
+    public Page<Product> listProducts(Predicate predicate, Pageable pageable) {
+        return productRepository.findAll(predicate, pageable);
     }
 }

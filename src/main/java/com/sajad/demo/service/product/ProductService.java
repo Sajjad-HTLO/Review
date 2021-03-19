@@ -1,8 +1,10 @@
 package com.sajad.demo.service.product;
 
+import com.querydsl.core.types.Predicate;
 import com.sajad.demo.domain.Product;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
-import java.util.List;
 import java.util.Optional;
 
 public interface ProductService {
@@ -11,5 +13,5 @@ public interface ProductService {
 
     void persistUpdatedProduct(Product updated);
 
-    List<Product> getProducts();
+    Page<Product> listProducts(Predicate predicate, Pageable pageable);
 }
