@@ -5,18 +5,22 @@ import com.sajad.demo.converter.CommentConverters;
 import com.sajad.demo.domain.Comment;
 import com.sajad.demo.domain.Product;
 import com.sajad.demo.dto.CommentNewDto;
-import com.sajad.demo.dto.CommentUpdateDto;
+import com.sajad.demo.dto.DecisionDto;
 import com.sajad.demo.exception.CommentNotAllowedException;
 import com.sajad.demo.exception.ResourceNotFoundException;
+import com.sajad.demo.helper.Utility;
 import com.sajad.demo.service.comment.CommentService;
 import com.sajad.demo.service.product.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.querydsl.binding.QuerydslPredicate;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import static com.sajad.demo.utility.Constants.UrlMappings.*;
+import static com.sajad.demo.helper.Constants.UrlMappings.COMMENTS_API;
 
 @RestController
 @RequestMapping(COMMENTS_API)
@@ -36,23 +40,25 @@ public class CommentController {
         this.commentConverters = commentConverters;
     }
 
-
     /**
      * Endpoint to list comments and filter them on demand.
+     * The admin can see non-verified comments too. (needs checking role of the principal)
      *
      * @param predicate
      * @return
      */
     @GetMapping
-    public ResponseEntity listComments(@QuerydslPredicate(root = Comment.class) Predicate predicate) {
+    public ResponseEntity listComments(@QuerydslPredicate(root = Comment.class) Predicate predicate,
+                                       @PageableDefault(sort = "id", direction = Sort.Direction.ASC) Pageable pageable) {
         return ResponseEntity.ok(
-                commentService.allComments(predicate, null)
+                commentService.listComments(predicate, pageable)
                         .stream()
                         .map(CommentConverters::fromComment));
     }
 
     /**
      * The user issues a new (unverified) comment for a product.
+     * (We may want to prevent repeated commenting as well)
      *
      * @return 204 status if successful.
      */
@@ -60,10 +66,12 @@ public class CommentController {
     public ResponseEntity newComment(@Validated @RequestBody CommentNewDto commentNewDto) throws CommentNotAllowedException {
         Product product = productService.getById(commentNewDto.getProductId()).orElseThrow(ResourceNotFoundException::new);
 
-        // Check the privacy of commenting
-        // If the product is commentable to the previous buyers only, complain if the proncipal is
-        // not previously bought this product
-        if (!product.isCommentable() || (!product.isCommentableToPublic() && !commentNewDto.getIsBuyer()))
+        /*
+        Check the commenting rules
+        If the product is commentable to the previous buyers only, complain if the principal is
+        not previously bought this product
+         */
+        if (Utility.isCommentingRulesViolated(product, commentNewDto.getIsBuyer()))
             throw new CommentNotAllowedException();
 
         Comment newComment = commentConverters.getByNewDto(commentNewDto);
@@ -75,20 +83,18 @@ public class CommentController {
     }
 
     /**
-     * Update (Approve or Reject) a comment. (By admin)
+     * Update (Approve or Reject) a comment (By an admin)
      *
      * @return
      */
     @PutMapping("/{id}")
     public ResponseEntity updateCommentStatus(@PathVariable long id,
-                                              @Validated @RequestBody CommentUpdateDto updateDto) {
+                                              @Validated @RequestBody DecisionDto updateDto) {
         Comment comment = commentService.getById(id).orElseThrow(ResourceNotFoundException::new);
-
         comment.setStatus(updateDto.getDecision());
 
         commentService.persistNewComment(comment);
 
         return ResponseEntity.noContent().build();
     }
-
 }
