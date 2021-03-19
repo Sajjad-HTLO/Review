@@ -1,4 +1,4 @@
-package com.sajad.demo.utility;
+package com.sajad.demo.helper;
 
 public class Constants {
 
@@ -9,12 +9,14 @@ public class Constants {
 
         public static final String COMMENTS_API = API_PREFIX + "/comments";
 
-        public static final String VOTES_API = API_PREFIX + "/votes";
+        public static final String RATES_API = API_PREFIX + "/rates";
     }
 
     public static class ErrorMessages {
         public static final String COMMENT_NOT_ALLOWED_MSG = "You can't comment on this product";
 
-        public static final String VOTE_NOT_ALLOWED_MSG = "You can't vote to this product";
+        public static final String RATE_NOT_ALLOWED_MSG = "You can't rate to this product";
+
+        public static final String ENTITY_NOT_FOUND_MSG = "Entity not found";
     }
 }
