@@ -5,24 +5,15 @@ server:
 
 spring:
   jpa:
-    database: mysql
     show-sql: true
-    hibernate:
-      ddl-auto: create-drop
   datasource:
-    url: jdbc:mysql://localhost:3306/test?characterEncoding=utf8
-    username: root
-    password: Root@200200
-    driver-class-name: com.mysql.jdbc.Driver
-    initialization-mode: always
+    url: jdbc:h2:mem:review;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
+    username: sa
+    password:
+    platform: org.hibernate.dialect.H2Dialect
+  h2:
+    console:
+      enabled: true
 
   jackson:
     property-naming-strategy: CAMEL_CASE_TO_LOWER_CASE_WITH_UNDERSCORES
-
-#  http:
-#    jackson:
-#      default-property-inclusion: non_null
-#      property-naming-strategy: CAMEL_CASE_TO_LOWER_CASE_WITH_UNDERSCORES
-#      date-format: com.fasterxml.jackson.databind.util.ISO8601DateFormat
-#      deserialization:
-#        READ_UNKNOWN_ENUM_VALUES_AS_NULL: true
