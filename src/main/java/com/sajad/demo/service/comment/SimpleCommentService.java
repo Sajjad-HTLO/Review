@@ -23,7 +23,7 @@ public class SimpleCommentService implements CommentService {
     /**
      * Find all comments based on the given {@code predicate} and {@code pageable}
      *
-     * @return
+     * @return Paged response of {@linkplain Comment}s.
      */
     @Override
     public Page<Comment> listComments(Predicate predicate, Pageable pageable) {

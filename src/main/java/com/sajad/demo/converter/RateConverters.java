@@ -3,8 +3,8 @@ package com.sajad.demo.converter;
 import com.sajad.demo.domain.Product;
 import com.sajad.demo.domain.Rate;
 import com.sajad.demo.domain.User;
-import com.sajad.demo.dto.RateNewDto;
-import com.sajad.demo.dto.VoteDto;
+import com.sajad.demo.dto.rate.RateDto;
+import com.sajad.demo.dto.rate.RateNewDto;
 import com.sajad.demo.exception.ResourceNotFoundException;
 import com.sajad.demo.service.product.ProductService;
 import com.sajad.demo.service.user.UserService;
@@ -26,8 +26,8 @@ public class RateConverters {
         this.productService = productService;
     }
 
-    public static VoteDto fromRate(Rate rate) {
-        VoteDto dto = new VoteDto();
+    public static RateDto fromRate(Rate rate) {
+        RateDto dto = new RateDto();
 
         dto.setId(rate.getId());
         dto.setRate(rate.getValue());

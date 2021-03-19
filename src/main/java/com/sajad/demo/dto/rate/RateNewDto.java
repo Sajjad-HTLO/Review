@@ -1,4 +1,4 @@
-package com.sajad.demo.dto;
+package com.sajad.demo.dto.rate;
 
 import com.sajad.demo.domain.CommentRateStatus;
 

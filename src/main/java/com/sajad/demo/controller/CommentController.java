@@ -4,8 +4,8 @@ import com.querydsl.core.types.Predicate;
 import com.sajad.demo.converter.CommentConverters;
 import com.sajad.demo.domain.Comment;
 import com.sajad.demo.domain.Product;
-import com.sajad.demo.dto.CommentNewDto;
 import com.sajad.demo.dto.DecisionDto;
+import com.sajad.demo.dto.comment.CommentNewDto;
 import com.sajad.demo.exception.CommentNotAllowedException;
 import com.sajad.demo.exception.ResourceNotFoundException;
 import com.sajad.demo.helper.Utility;
@@ -43,9 +43,6 @@ public class CommentController {
     /**
      * Endpoint to list comments and filter them on demand.
      * The admin can see non-verified comments too. (needs checking role of the principal)
-     *
-     * @param predicate
-     * @return
      */
     @GetMapping
     public ResponseEntity listComments(@QuerydslPredicate(root = Comment.class) Predicate predicate,
@@ -63,18 +60,18 @@ public class CommentController {
      * @return 204 status if successful.
      */
     @PostMapping
-    public ResponseEntity newComment(@Validated @RequestBody CommentNewDto commentNewDto) throws CommentNotAllowedException {
-        Product product = productService.getById(commentNewDto.getProductId()).orElseThrow(ResourceNotFoundException::new);
+    public ResponseEntity newComment(@Validated @RequestBody CommentNewDto newDto) throws CommentNotAllowedException {
+        Product product = productService.getById(newDto.getProductId()).orElseThrow(ResourceNotFoundException::new);
 
         /*
         Check the commenting rules
         If the product is commentable to the previous buyers only, complain if the principal is
         not previously bought this product
          */
-        if (Utility.isCommentingRulesViolated(product, commentNewDto.getIsBuyer()))
+        if (Utility.isCommentingRulesViolated(product, newDto.getIsBuyer()))
             throw new CommentNotAllowedException();
 
-        Comment newComment = commentConverters.getByNewDto(commentNewDto);
+        Comment newComment = commentConverters.getByNewDto(newDto);
 
         product.getComments().add(newComment);
         productService.persistUpdatedProduct(product);
@@ -83,13 +80,10 @@ public class CommentController {
     }
 
     /**
-     * Update (Approve or Reject) a comment (By an admin)
-     *
-     * @return
+     * Update (Approve or Reject) a comment's state (By an admin of course)
      */
     @PutMapping("/{id}")
-    public ResponseEntity updateCommentStatus(@PathVariable long id,
-                                              @Validated @RequestBody DecisionDto updateDto) {
+    public ResponseEntity updateCommentStatus(@PathVariable long id, @Validated @RequestBody DecisionDto updateDto) {
         Comment comment = commentService.getById(id).orElseThrow(ResourceNotFoundException::new);
         comment.setStatus(updateDto.getDecision());
 

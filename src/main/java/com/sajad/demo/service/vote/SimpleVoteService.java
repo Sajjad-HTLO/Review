@@ -32,15 +32,10 @@ public class SimpleVoteService implements VoteService {
 
     /**
      * This is used to detect duplicate voting.
-     *
-     * @param userId
-     * @param productId
-     * @return
      */
     @Override
     public Optional<Rate> getByUserIdAndProductId(long userId, long productId) {
         return voteRepository.findByUserIdAndProductId(userId, productId);
-
     }
 
     @Override

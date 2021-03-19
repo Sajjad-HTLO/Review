@@ -1,4 +1,4 @@
-package com.sajad.demo;
+package com.sajad.demo.configuration;
 
 import com.sajad.demo.dto.ErrorResponseDto;
 import com.sajad.demo.exception.CommentNotAllowedException;
@@ -14,7 +14,7 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 import static com.sajad.demo.helper.Constants.ErrorMessages.*;
 
 /**
- * Rest exception handler to catch the exceptions and provide a more meaningful message
+ * Rest exception handler to catch exceptions and provide a meaningful message
  * along with the proper status code.
  * Here, we used constant hardcoded messages, but in case of need, we can use i18n's internationalization
  * message sources.

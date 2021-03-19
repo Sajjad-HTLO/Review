@@ -5,7 +5,7 @@ import com.sajad.demo.converter.RateConverters;
 import com.sajad.demo.domain.Product;
 import com.sajad.demo.domain.Rate;
 import com.sajad.demo.dto.DecisionDto;
-import com.sajad.demo.dto.RateNewDto;
+import com.sajad.demo.dto.rate.RateNewDto;
 import com.sajad.demo.exception.ResourceNotFoundException;
 import com.sajad.demo.exception.VoteNotAllowedException;
 import com.sajad.demo.helper.Utility;

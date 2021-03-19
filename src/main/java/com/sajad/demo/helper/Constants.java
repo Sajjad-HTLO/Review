@@ -1,5 +1,8 @@
 package com.sajad.demo.helper;
 
+/**
+ * Contains constants used across the project.
+ */
 public class Constants {
 
     public static class UrlMappings {

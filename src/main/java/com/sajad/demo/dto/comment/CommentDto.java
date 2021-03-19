@@ -1,21 +1,30 @@
-package com.sajad.demo.dto;
+package com.sajad.demo.dto.comment;
 
 import com.sajad.demo.domain.CommentRateStatus;
 
 import java.util.Date;
 
 /**
- * Represent a vote to the client.
+ * A single verified comment of a product.
+ * (The comment owner info skipped)
  */
-public class VoteDto {
+public class CommentDto {
 
     private long id;
 
-    private int rate;
+    private String content;
 
     private CommentRateStatus status;
 
     private Date date;
+
+    public String getContent() {
+        return content;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
+    }
 
     public CommentRateStatus getStatus() {
         return status;
@@ -39,13 +48,5 @@ public class VoteDto {
 
     public void setId(long id) {
         this.id = id;
-    }
-
-    public int getRate() {
-        return rate;
-    }
-
-    public void setRate(int rate) {
-        this.rate = rate;
     }
 }

@@ -4,8 +4,9 @@ import com.sajad.demo.domain.Comment;
 import com.sajad.demo.domain.CommentRateStatus;
 import com.sajad.demo.domain.Product;
 import com.sajad.demo.domain.Rate;
-import com.sajad.demo.dto.ProductListDto;
-import com.sajad.demo.dto.ProductUpdateDto;
+import com.sajad.demo.dto.product.ProductListDto;
+import com.sajad.demo.dto.product.ProductUpdateDto;
+import com.sajad.demo.exception.ResourceNotFoundException;
 import com.sajad.demo.service.product.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -25,7 +26,7 @@ public class ProductConverters {
     }
 
     public Product convertFromUpdateDto(ProductUpdateDto updateDto, long id) {
-        Product product = productService.getById(id).orElseThrow(null);
+        Product product = productService.getById(id).orElseThrow(ResourceNotFoundException::new);
 
         product.setVisible(updateDto.isVisible());
 
@@ -56,7 +57,7 @@ public class ProductConverters {
         If the product is votable but not to the public, then it's votable to the buyers only.
          */
         if (product.isRatable()) {
-            listDto.setVotable(true);
+            listDto.setRatable(true);
 
             if (product.isRatableToPublic())
                 listDto.setVotableToPublic(true);

@@ -1,4 +1,4 @@
-package com.sajad.demo.dto;
+package com.sajad.demo.dto.comment;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;

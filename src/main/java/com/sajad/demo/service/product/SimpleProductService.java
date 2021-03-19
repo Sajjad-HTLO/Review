@@ -21,18 +21,17 @@ public class SimpleProductService implements ProductService {
     }
 
     @Override
-    public Optional<Product> getById(long id) {
+    public Page<Product> listProducts(Predicate predicate, Pageable pageable) {
+        return productRepository.findAll(predicate, pageable);
+    }
 
+    @Override
+    public Optional<Product> getById(long id) {
         return productRepository.findById(id);
     }
 
     @Override
     public void persistUpdatedProduct(Product updated) {
         productRepository.save(updated);
-    }
-
-    @Override
-    public Page<Product> listProducts(Predicate predicate, Pageable pageable) {
-        return productRepository.findAll(predicate, pageable);
     }
 }

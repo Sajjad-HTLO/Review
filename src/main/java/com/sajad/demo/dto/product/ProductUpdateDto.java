@@ -1,11 +1,11 @@
-package com.sajad.demo.dto;
+package com.sajad.demo.dto.product;
 
 import javax.validation.constraints.NotNull;
 
 public class ProductUpdateDto {
 
     @NotNull
-    private boolean isVisible;
+    private boolean visible;
 
     @NotNull
     private boolean commentableToPublic;
@@ -14,17 +14,17 @@ public class ProductUpdateDto {
     private boolean commentableToBuyers;
 
     @NotNull
-    private boolean votableToPublic;
+    private boolean ratableToPublic;
 
     @NotNull
-    private boolean votableToBuyers;
+    private boolean ratableToBuyers;
 
     public boolean isVisible() {
-        return isVisible;
+        return visible;
     }
 
     public void setVisible(boolean visible) {
-        isVisible = visible;
+        this.visible = visible;
     }
 
     public boolean isCommentableToPublic() {
@@ -43,19 +43,19 @@ public class ProductUpdateDto {
         this.commentableToBuyers = commentableToBuyers;
     }
 
-    public boolean isVotableToPublic() {
-        return votableToPublic;
+    public boolean isRatableToPublic() {
+        return ratableToPublic;
     }
 
-    public void setVotableToPublic(boolean votableToPublic) {
-        this.votableToPublic = votableToPublic;
+    public void setRatableToPublic(boolean ratableToPublic) {
+        this.ratableToPublic = ratableToPublic;
     }
 
-    public boolean isVotableToBuyers() {
-        return votableToBuyers;
+    public boolean isRatableToBuyers() {
+        return ratableToBuyers;
     }
 
-    public void setVotableToBuyers(boolean votableToBuyers) {
-        this.votableToBuyers = votableToBuyers;
+    public void setRatableToBuyers(boolean ratableToBuyers) {
+        this.ratableToBuyers = ratableToBuyers;
     }
 }

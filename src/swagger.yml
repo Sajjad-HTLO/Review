@@ -27,34 +27,110 @@ schemes:
 produces:
   - application/json
 paths:
-  /comments:
-    post:
+  /products:
+    get:
       description:
-        To post a new comment
+        To list products
       tags:
-        - Comment
+        - Products
       parameters:
-        - name: body
-          in: body
-          description: Encapsulates a new comment details.
-          required: true
-          schema:
-            $ref: '#/definitions/NewComment'
-
+        - name: page
+          in: query
+          description: Page value.
+          required: false
+          type: number
+          default: 0
+        - name: size
+          in: query
+          description: Size of page.
+          required: false
+          type: number
+          default: 10
       responses:
-        204:
-          description: The comment has been saved successfully.
+        200:
+          description: A list of products returns
+          schema:
+            $ref: '#/definitions/ProductsListResponse'
         400:
-          description:
-            Request is invalid or the user is in an invalid state. Possible reasons could be validation errors.
-          schema:
-            $ref: '#/definitions/ErrorResponse'
-        403:
-          description:
-            When an already authenticated user calls this service
-          schema:
-            $ref: '#/definitions/ErrorResponse'
+          description: Request is invalid
         500:
           description: Internal server error.
+  /products/{id}:
+    put:
+      tags:
+        - Products
+      description: Update a product's state, e.g., make it visible ,...
+      parameters:
+        - name: id
+          in: path
+          type: string
+          required: true
+          description: id of specific product
+        - name: body
+          in: body
+          required: true
+          description: body of edit request.
           schema:
-            $ref: '#/definitions/ErrorResponse'
+            $ref: "#/definitions/EditProduct"
+      responses:
+        204:
+          description: The operation was successful.
+        400:
+          description: Bad request, id is invalid.
+        404:
+          description: Requested object not found.
+        500:
+          description: Internal server error.
+
+definitions:
+  ProductsListResponse:
+    type: object
+    properties:
+      data:
+        type: array
+        items:
+          $ref: '#/definitions/ProductsList'
+
+  ProductsList:
+    type: object
+    properties:
+      id:
+        type: number
+        description: Identifier of the product.
+      name:
+        type: string
+        description: Name of the product.
+      is_visible:
+        type: boolean
+        description: Either if this product is visible to the users.
+      is_commentable:
+        type: boolean
+        description: Either if this product is commentable to the users.
+      is_commentable_to_pulic:
+        type: boolean
+        description: Indicates if this product is commentable to public or only the previous buyers can comment on.
+      is_ratable:
+        type: boolean
+        description: Either if this product is ratable to the users.
+      is_ratable_to_pulic:
+        type: boolean
+        description: Indicates if this product is ratable to public or only the previous buyers can rate on.
+
+  EditProduct:
+    type: object
+    properties:
+      is_visible:
+        type: boolean
+        description: Either if this product is visible to the users.
+      is_commentable:
+        type: boolean
+        description: Either if this product is commentable to the users.
+      is_commentable_to_pulic:
+        type: boolean
+        description: Indicates if this product is commentable to public or only the previous buyers can comment on.
+      is_ratable:
+        type: boolean
+        description: Either if this product is ratable to the users.
+      is_ratable_to_pulic:
+        type: boolean
+        description: Indicates if this product is ratable to public or only the previous buyers can rate on.

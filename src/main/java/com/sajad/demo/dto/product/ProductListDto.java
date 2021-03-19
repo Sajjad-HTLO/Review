@@ -1,4 +1,6 @@
-package com.sajad.demo.dto;
+package com.sajad.demo.dto.product;
+
+import com.sajad.demo.dto.comment.CommentDto;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,7 +18,7 @@ public class ProductListDto {
 
     private boolean isCommentable;
 
-    private boolean isVotable;
+    private boolean isRatable;
 
     private boolean commentableToPublic;
 
@@ -109,11 +111,11 @@ public class ProductListDto {
         isCommentable = commentable;
     }
 
-    public boolean isVotable() {
-        return isVotable;
+    public boolean isRatable() {
+        return isRatable;
     }
 
-    public void setVotable(boolean votable) {
-        isVotable = votable;
+    public void setRatable(boolean ratable) {
+        isRatable = ratable;
     }
 }
