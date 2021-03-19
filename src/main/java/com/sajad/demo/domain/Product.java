@@ -1,11 +1,12 @@
 package com.sajad.demo.domain;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.Set;
 
 @Entity
 @Table(name = "product")
-public class Product {
+public class Product implements Serializable {
 
     @Id
     @GeneratedValue
@@ -20,13 +21,13 @@ public class Product {
     )
     private Set<Comment> comments;
 
-    @OneToMany
+    @OneToMany(cascade = CascadeType.MERGE)
     @JoinTable(
-            name = "product_votes",
+            name = "product_rates",
             joinColumns = @JoinColumn(name = "id"),
-            inverseJoinColumns = @JoinColumn(name = "vote_id")
+            inverseJoinColumns = @JoinColumn(name = "rate_id")
     )
-    private Set<Vote> votes;
+    private Set<Rate> rates;
 
     /**
      * The product name
@@ -36,7 +37,7 @@ public class Product {
     /**
      * Either this product is visible to the customers to order.
      */
-    private boolean isVisible;
+    private boolean visible;
 
     /**
      * Either this is allowed for this product to write comments.
@@ -44,9 +45,9 @@ public class Product {
     private boolean isCommentable;
 
     /**
-     * Either this is allowed for this product to vote.
+     * Either this is allowed for this product to rate.
      */
-    private boolean isVotable;
+    private boolean isRatable;
 
     /**
      * If {@code true} then every user can put comment for this product.
@@ -58,7 +59,7 @@ public class Product {
      * If {@code true} then every user can rate for this product.
      * Otherwise, only the previous buyers can rate.
      */
-    private boolean votableToPublic;
+    private boolean RatableToPublic;
 
     public Long getId() {
         return id;
@@ -73,11 +74,11 @@ public class Product {
     }
 
     public boolean isVisible() {
-        return isVisible;
+        return visible;
     }
 
     public void setVisible(boolean visible) {
-        isVisible = visible;
+        this.visible = visible;
     }
 
     public boolean isCommentable() {
@@ -88,12 +89,12 @@ public class Product {
         isCommentable = commentable;
     }
 
-    public boolean isVotable() {
-        return isVotable;
+    public boolean isRatable() {
+        return isRatable;
     }
 
-    public void setVotable(boolean votable) {
-        isVotable = votable;
+    public void setRatable(boolean ratable) {
+        isRatable = ratable;
     }
 
     public boolean isCommentableToPublic() {
@@ -104,14 +105,6 @@ public class Product {
         this.commentableToPublic = commentsVisibleToPublic;
     }
 
-    public boolean isVotableToPublic() {
-        return votableToPublic;
-    }
-
-    public void setVotableToPublic(boolean votesVisibleToPublic) {
-        this.votableToPublic = votesVisibleToPublic;
-    }
-
     public Set<Comment> getComments() {
         return comments;
     }
@@ -120,11 +113,19 @@ public class Product {
         this.comments = comments;
     }
 
-    public Set<Vote> getVotes() {
-        return votes;
+    public Set<Rate> getRates() {
+        return rates;
     }
 
-    public void setVotes(Set<Vote> votes) {
-        this.votes = votes;
+    public void setRates(Set<Rate> rates) {
+        this.rates = rates;
+    }
+
+    public boolean isRatableToPublic() {
+        return RatableToPublic;
+    }
+
+    public void setRatableToPublic(boolean ratableToPublic) {
+        RatableToPublic = ratableToPublic;
     }
 }

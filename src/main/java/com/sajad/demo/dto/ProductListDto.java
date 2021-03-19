@@ -1,9 +1,7 @@
 package com.sajad.demo.dto;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 /**
  * Represents detail of a product to be used as a list item in front-end.
@@ -23,8 +21,6 @@ public class ProductListDto {
     private boolean commentableToPublic;
 
     private boolean votableToPublic;
-
-    // 3 last comment and average of total rates && count of total comments (verified comments)
 
     /**
      * Last 3 comments

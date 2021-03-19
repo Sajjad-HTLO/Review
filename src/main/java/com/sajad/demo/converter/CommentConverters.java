@@ -11,9 +11,6 @@ import com.sajad.demo.service.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.time.Instant;
-import java.util.Date;
-
 @Component
 public class CommentConverters {
 
@@ -33,7 +30,6 @@ public class CommentConverters {
 
         Comment comment = new Comment();
 
-//        comment.setDate(Date.from(Instant.now()));
         comment.setContent(newDto.getContent());
         comment.setUser(commentOwner);
         comment.setProduct(product);
@@ -44,7 +40,10 @@ public class CommentConverters {
     public static CommentDto fromComment(Comment comment) {
         CommentDto dto = new CommentDto();
 
+        dto.setId(comment.getId());
         dto.setContent(comment.getContent());
+        dto.setStatus(comment.getStatus());
+        dto.setDate(comment.getDate());
 
         return dto;
     }

@@ -1,9 +1,9 @@
 package com.sajad.demo.converter;
 
 import com.sajad.demo.domain.Comment;
-import com.sajad.demo.domain.CommentVoteStatus;
+import com.sajad.demo.domain.CommentRateStatus;
 import com.sajad.demo.domain.Product;
-import com.sajad.demo.domain.Vote;
+import com.sajad.demo.domain.Rate;
 import com.sajad.demo.dto.ProductListDto;
 import com.sajad.demo.dto.ProductUpdateDto;
 import com.sajad.demo.service.product.ProductService;
@@ -12,7 +12,6 @@ import org.springframework.stereotype.Component;
 
 import java.util.Comparator;
 import java.util.List;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 @Component
@@ -56,16 +55,16 @@ public class ProductConverters {
         Resolve the voting status
         If the product is votable but not to the public, then it's votable to the buyers only.
          */
-        if (product.isVotable()) {
+        if (product.isRatable()) {
             listDto.setVotable(true);
 
-            if (product.isVotableToPublic())
+            if (product.isRatableToPublic())
                 listDto.setVotableToPublic(true);
         }
 
         // Set last 3 verified comments (SORTED BY DATE)
         List<Comment> verifiedComments = product.getComments().stream()
-                .filter(comment -> comment.getStatus() == CommentVoteStatus.VERIFIED)
+                .filter(comment -> comment.getStatus() == CommentRateStatus.VERIFIED)
                 .sorted(Comparator.comparing(Comment::getDate).reversed())
                 .limit(3)
                 .collect(Collectors.toList());
@@ -91,9 +90,9 @@ public class ProductConverters {
      * @return
      */
     private double getAverageVerifiedRate(Product product) {
-        return product.getVotes().stream()
-                .filter(vote -> vote.getStatus() == CommentVoteStatus.VERIFIED)
-                .map(Vote::getRate)
+        return product.getRates().stream()
+                .filter(rate -> rate.getStatus() == CommentRateStatus.VERIFIED)
+                .map(Rate::getValue)
                 .mapToInt(Integer::intValue)
                 .summaryStatistics()
                 .getAverage();

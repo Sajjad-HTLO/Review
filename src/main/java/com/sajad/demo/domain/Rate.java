@@ -6,11 +6,11 @@ import java.io.Serializable;
 import java.util.Date;
 
 /**
- * Encapsulates a comment entity.
+ * Encapsulates a rate, the value range is from 1 to 5.
  */
 @Entity
-@Table(name = "comment")
-public class Comment implements Serializable {
+@Table(name = "rate")
+public class Rate implements Serializable {
 
     @Id
     @GeneratedValue
@@ -25,26 +25,29 @@ public class Comment implements Serializable {
     private Product product;
 
     @NotNull
-    private String content;
-
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date date = new Date();
+    private Integer value;
 
     /**
-     * Initial status of the comment.
+     * Initial status of the rate.
      */
     private CommentRateStatus status = CommentRateStatus.PENDING;
+
+    /**
+     * Rating date
+     */
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date date = new Date();
 
     public Long getId() {
         return id;
     }
 
-    public String getContent() {
-        return content;
+    public int getValue() {
+        return value;
     }
 
-    public void setContent(String text) {
-        this.content = text;
+    public void setValue(int value) {
+        this.value = value;
     }
 
     public User getUser() {
@@ -55,20 +58,20 @@ public class Comment implements Serializable {
         this.user = user;
     }
 
-    public Date getDate() {
-        return date;
-    }
-
-    public void setDate(Date date) {
-        this.date = date;
-    }
-
     public CommentRateStatus getStatus() {
         return status;
     }
 
     public void setStatus(CommentRateStatus status) {
         this.status = status;
+    }
+
+    public Date getDate() {
+        return date;
+    }
+
+    public void setDate(Date date) {
+        this.date = date;
     }
 
     public Product getProduct() {

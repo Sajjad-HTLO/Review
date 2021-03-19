@@ -60,12 +60,4 @@ public class CommentNewDto {
     public void setIsBuyer(Boolean isBuyer) {
         this.isBuyer = isBuyer;
     }
-
-//    public Boolean getBuyer() {
-//        return isBuyer;
-//    }
-//
-//    public void setBuyer(Boolean buyer) {
-//        isBuyer = buyer;
-//    }
 }

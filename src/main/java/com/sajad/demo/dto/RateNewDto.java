@@ -1,10 +1,12 @@
 package com.sajad.demo.dto;
 
-import com.sajad.demo.domain.CommentVoteStatus;
+import com.sajad.demo.domain.CommentRateStatus;
 
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 
-public class VoteNewDto {
+public class RateNewDto {
 
     /**
      * Since we don't have a security context to be populated upon the authentication, we have to
@@ -14,16 +16,22 @@ public class VoteNewDto {
     private Long userId;
 
     @NotNull
+    private Boolean isBuyer;
+
+    @NotNull
     private Long productId;
 
     /**
      * Initial status of the vote.
      */
-    private CommentVoteStatus status = CommentVoteStatus.PENDING;
+    private CommentRateStatus status = CommentRateStatus.PENDING;
 
     /**
-     * The actual vote value ranging from 1 to 5.
+     * The actual rate value ranging from 1 to 5.
      */
+    @NotNull
+    @Max(value = 5, message = "max is 5")
+    @Min(1)
     private Integer rate;
 
     public Long getUserId() {
@@ -50,11 +58,19 @@ public class VoteNewDto {
         this.productId = productId;
     }
 
-    public CommentVoteStatus getStatus() {
+    public CommentRateStatus getStatus() {
         return status;
     }
 
-    public void setStatus(CommentVoteStatus status) {
+    public void setStatus(CommentRateStatus status) {
         this.status = status;
+    }
+
+    public Boolean getIsBuyer() {
+        return isBuyer;
+    }
+
+    public void setIsBuyer(Boolean isBuyer) {
+        this.isBuyer = isBuyer;
     }
 }
