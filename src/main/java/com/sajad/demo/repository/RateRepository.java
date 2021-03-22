@@ -12,7 +12,7 @@ import org.springframework.stereotype.Repository;
 import java.util.Optional;
 
 @Repository
-public interface VoteRepository extends JpaRepository<Rate, Long>, QuerydslPredicateExecutor<Rate>,
+public interface RateRepository extends JpaRepository<Rate, Long>, QuerydslPredicateExecutor<Rate>,
         QuerydslBinderCustomizer<QRate> {
 
     Optional<Rate> findByUserIdAndProductId(long userId, long productId);

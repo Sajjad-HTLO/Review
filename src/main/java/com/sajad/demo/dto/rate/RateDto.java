@@ -5,7 +5,7 @@ import com.sajad.demo.domain.CommentRateStatus;
 import java.util.Date;
 
 /**
- * Represent a vote to the client.
+ * Represent a rate to the client.
  */
 public class RateDto {
 

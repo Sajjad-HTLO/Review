@@ -5,7 +5,7 @@ import com.sajad.demo.domain.CommentRateStatus;
 import javax.validation.constraints.NotNull;
 
 /**
- * Dto class to approve or reject a comment or vote.
+ * Dto class to approve or reject a comment or rate.
  */
 public class DecisionDto {
 

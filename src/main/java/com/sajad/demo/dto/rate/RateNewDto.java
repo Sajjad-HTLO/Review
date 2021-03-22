@@ -1,29 +1,19 @@
 package com.sajad.demo.dto.rate;
 
+import com.fasterxml.jackson.annotation.JsonAlias;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.sajad.demo.domain.CommentRateStatus;
+import com.sajad.demo.dto.ContextDto;
 
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 
-public class RateNewDto {
-
+public class RateNewDto extends ContextDto {
     /**
-     * Since we don't have a security context to be populated upon the authentication, we have to
-     * rely on the user identifier passed from the client
+     * Initial status of the rate.
      */
-    @NotNull
-    private Long userId;
-
-    @NotNull
-    private Boolean isBuyer;
-
-    @NotNull
-    private Long productId;
-
-    /**
-     * Initial status of the vote.
-     */
+    @JsonIgnore
     private CommentRateStatus status = CommentRateStatus.PENDING;
 
     /**
@@ -34,28 +24,12 @@ public class RateNewDto {
     @Min(1)
     private Integer rate;
 
-    public Long getUserId() {
-        return userId;
-    }
-
-    public void setUserId(Long userId) {
-        this.userId = userId;
-    }
-
     public Integer getRate() {
         return rate;
     }
 
     public void setRate(Integer rate) {
         this.rate = rate;
-    }
-
-    public Long getProductId() {
-        return productId;
-    }
-
-    public void setProductId(Long productId) {
-        this.productId = productId;
     }
 
     public CommentRateStatus getStatus() {
@@ -66,11 +40,4 @@ public class RateNewDto {
         this.status = status;
     }
 
-    public Boolean getIsBuyer() {
-        return isBuyer;
-    }
-
-    public void setIsBuyer(Boolean isBuyer) {
-        this.isBuyer = isBuyer;
-    }
 }

@@ -33,6 +33,7 @@ public class Comment implements Serializable {
     /**
      * Initial status of the comment.
      */
+    @Enumerated(EnumType.STRING)
     private CommentRateStatus status = CommentRateStatus.PENDING;
 
     public Long getId() {

@@ -3,7 +3,7 @@ package com.sajad.demo.configuration;
 import com.sajad.demo.dto.ErrorResponseDto;
 import com.sajad.demo.exception.CommentNotAllowedException;
 import com.sajad.demo.exception.ResourceNotFoundException;
-import com.sajad.demo.exception.VoteNotAllowedException;
+import com.sajad.demo.exception.RateNotAllowedException;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 import org.springframework.http.ResponseEntity;
@@ -30,7 +30,7 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
         return ResponseEntity.badRequest().body(responseDto);
     }
 
-    @ExceptionHandler(VoteNotAllowedException.class)
+    @ExceptionHandler(RateNotAllowedException.class)
     protected ResponseEntity<Object> handleVoteNotAllowed() {
         ErrorResponseDto responseDto = new ErrorResponseDto(RATE_NOT_ALLOWED_MSG);
 

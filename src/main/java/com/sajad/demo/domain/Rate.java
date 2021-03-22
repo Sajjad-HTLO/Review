@@ -30,6 +30,7 @@ public class Rate implements Serializable {
     /**
      * Initial status of the rate.
      */
+    @Enumerated(EnumType.STRING)
     private CommentRateStatus status = CommentRateStatus.PENDING;
 
     /**

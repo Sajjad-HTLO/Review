@@ -7,10 +7,10 @@ import com.sajad.demo.domain.Rate;
 import com.sajad.demo.dto.DecisionDto;
 import com.sajad.demo.dto.rate.RateNewDto;
 import com.sajad.demo.exception.ResourceNotFoundException;
-import com.sajad.demo.exception.VoteNotAllowedException;
+import com.sajad.demo.exception.RateNotAllowedException;
 import com.sajad.demo.helper.Utility;
 import com.sajad.demo.service.product.ProductService;
-import com.sajad.demo.service.vote.VoteService;
+import com.sajad.demo.service.rate.RateService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -26,65 +26,65 @@ import static com.sajad.demo.helper.Constants.UrlMappings.RATES_API;
 
 @RestController
 @RequestMapping(RATES_API)
-public class VoteController {
+public class RateController {
 
     private final ProductService productService;
 
-    private final VoteService voteService;
+    private final RateService rateService;
 
     private final RateConverters rateConverters;
 
     @Autowired
-    public VoteController(ProductService productService, VoteService voteService, RateConverters rateConverters) {
+    public RateController(ProductService productService, RateService rateService, RateConverters rateConverters) {
         this.productService = productService;
-        this.voteService = voteService;
+        this.rateService = rateService;
         this.rateConverters = rateConverters;
     }
 
     /**
-     * Endpoint to list votes and filter them on demand.
-     * The admin can see non-verified votes too. (needs checking role of the principal)
+     * Endpoint to list rates and filter them on demand.
+     * The admin can see non-verified rates too. (needs checking role of the principal)
      *
      * @param predicate
      * @return
      */
     @GetMapping
-    public ResponseEntity listVotes(@QuerydslPredicate(root = Rate.class) Predicate predicate,
+    public ResponseEntity listRates(@QuerydslPredicate(root = Rate.class) Predicate predicate,
                                     @PageableDefault(sort = "id", direction = Sort.Direction.ASC) Pageable pageable) {
         return ResponseEntity.ok(
-                voteService.listVotes(predicate, pageable)
+                rateService.listRates(predicate, pageable)
                         .stream()
                         .map(RateConverters::fromRate));
     }
 
     /**
-     * Endpoint to intercept a new vote for a product.
+     * Endpoint to intercept a new ate for a product.
      *
      * @param newDto
      * @return
-     * @throws VoteNotAllowedException The product is not votable.
+     * @throws RateNotAllowedException The product is not votable.
      */
     @PostMapping
-    public ResponseEntity newVote(@Validated @RequestBody RateNewDto newDto) throws VoteNotAllowedException {
+    public ResponseEntity newRate(@Validated @RequestBody RateNewDto newDto) throws RateNotAllowedException {
         Product product = productService.getById(newDto.getProductId()).orElseThrow(ResourceNotFoundException::new);
 
         /*
         Check the rating rules
         I didn't move this checking to voting service layer, because I don't like passing the dto instance to
         the service layer.
-        As a predefined rule for repeated rating, we re-write the vote
+        As a predefined rule for repeated rating, we re-write the rate
          */
         if (Utility.isRatingRulesViolated(product, newDto.getIsBuyer()))
-            throw new VoteNotAllowedException();
+            throw new RateNotAllowedException();
 
         // Check for duplicate rate and update the rate value
-        Optional<Rate> duplicate = voteService.getByUserIdAndProductId(newDto.getUserId(), newDto.getProductId());
+        Optional<Rate> duplicate = rateService.getByUserIdAndProductId(newDto.getUserId(), newDto.getProductId());
 
         if (duplicate.isPresent()) {
             duplicate.ifPresent(updatedRate ->
                     product.getRates().stream()
                             // We're sure there duplicate rate exist
-                            .filter(vote -> vote.getId().equals(updatedRate.getId()))
+                            .filter(rate -> rate.getId().equals(updatedRate.getId()))
                             .findFirst().get()
                             .setValue(newDto.getRate()));
         } else {
@@ -98,15 +98,15 @@ public class VoteController {
     }
 
     /**
-     * Update (Approve or Reject) a given vote. (By an admin)
+     * Update (Approve or Reject) a given rate. (By an admin)
      */
     @PutMapping("/{id}")
-    public ResponseEntity updateVoteStatus(@PathVariable long id, @Validated @RequestBody DecisionDto decisionDto) {
-        Rate rate = voteService.getById(id).orElseThrow(ResourceNotFoundException::new);
+    public ResponseEntity updateRateStatus(@PathVariable long id, @Validated @RequestBody DecisionDto decisionDto) {
+        Rate rate = rateService.getById(id).orElseThrow(ResourceNotFoundException::new);
 
         rate.setStatus(decisionDto.getDecision());
 
-        voteService.persistNewVote(rate);
+        rateService.persistNewRate(rate);
 
         return ResponseEntity.noContent().build();
     }

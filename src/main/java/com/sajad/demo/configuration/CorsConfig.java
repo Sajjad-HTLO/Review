@@ -14,9 +14,9 @@ public class CorsConfig implements WebMvcConfigurer {
 
     @Override
     public void addCorsMappings(CorsRegistry registry) {
-        registry.addMapping("/api/**")
-                .allowedOrigins("https://editor.swagger.io", "http://127.0.0.1:8080")
-                .allowedMethods("PUT", "DELETE", "GET", "POST", "OPTIONS")
+        registry.addMapping("/**")
+                .allowedOrigins("*")
+                .allowedMethods("HEAD", "GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS")
                 .allowCredentials(false).maxAge(3600);
     }
 }
