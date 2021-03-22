@@ -10,9 +10,9 @@ values (20, 'p1', true, true, true, true, true),
        (23, 'p4', false, true, true, true, true);
 
 insert into comment (id, content, date, status, product_id, user_id)
-values (30, 'Good product', '2021-03-19 14:33:40', 1, 20, 10),
-       (31, 'Not bad', '2021-02-19 15:33:40', 1, 20, 10),
-       (32, 'Terrible', '2020-05-10 07:30:00', 1, 20, 11),
-       (33, 'not-readable', '2020-02-19 15:33:40', 2, 20, 10),
-       (34, 'Hello', '2020-05-10 07:30:00', 0, 20, 10);
+values (30, 'Good product', '2021-03-19 14:33:40', 'VERIFIED', 20, 10),
+       (31, 'Not bad', '2021-02-19 15:33:40', 'VERIFIED', 20, 10),
+       (32, 'Terrible', '2020-05-10 07:30:00', 'VERIFIED', 20, 11),
+       (33, 'not-readable', '2020-02-19 15:33:40', 'REJECTED', 20, 10),
+       (34, 'Hello', '2020-05-10 07:30:00', 'PENDING', 20, 10);
 
