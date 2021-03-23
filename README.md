@@ -55,7 +55,6 @@ post a new comment for a product, the payload example is represented below:
 ```javascript
 {
 "user_id": 10, // Identifier of principal user
-"product_id": 20, // Identifier of product
 "is_buyer": false, // Either the principal had previously bought this product
 "content": "The comment content" // The comment  content
 }
@@ -69,7 +68,6 @@ Rate a product, the payload example is represented below:
 ```javascript
 {
 "user_id": 10, // Identifier of principal user
-"product_id": 20, // Identifier of product
 "is_buyer": false, // Either the principal had previously bought this product
 "rate": 5 // The rate value, ranging from 1-5
 }
