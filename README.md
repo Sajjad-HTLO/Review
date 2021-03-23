@@ -47,6 +47,34 @@ The body payload has the following attributes:
 }
 ```
 
+```http
+POST /api/products/{id}/comments
+```
+post a new comment for a product, the payload example is represented below:
+
+```javascript
+{
+"user_id": 10, // Identifier of principal user
+"product_id": 20, // Identifier of product
+"is_buyer": false, // Either the principal had previously bought this product
+"content": "The comment content" // The comment  content
+}
+```
+
+```http
+POST /api/products/{id}/rates
+```
+Rate a product, the payload example is represented below:
+
+```javascript
+{
+"user_id": 10, // Identifier of principal user
+"product_id": 20, // Identifier of product
+"is_buyer": false, // Either the principal had previously bought this product
+"rate": 5 // The rate value, ranging from 1-5
+}
+```
+
 ## Comment API
 
 ```http
@@ -61,20 +89,6 @@ In this endpoint, list of comments will be displayed, example:
 "content": "The comment content", // The comment  content
 "status": "PENDING",  // The comment status, possible values are `PENDING`, `VERIFIED`, `REJECTED`
 "date": 1616151820000 // The EPOCH of the comment submision date
-}
-```
-
-```http
-Post /api/comments
-```
-This endpoint is used to post a new comment for a product, the payload example is represented below:
-
-```javascript
-{
-"user_id": 10, // Identifier of principal user
-"product_id": 20, // Identifier of product
-"is_buyer": false, // Either the principal had previously bought this product
-"content": "The comment content" // The comment  content
 }
 ```
 
@@ -103,20 +117,6 @@ In this endpoint, list of rates will be displayed, example:
 "rate": 3 , // The rate value ranging from 1-5
 "status": "PENDING",  // The rate status, possible values are `PENDING`, `VERIFIED`, `REJECTED`
 "date": 1616151820000 // The EPOCH of the rate submision date
-}
-```
-
-```http
-Post /api/rates
-```
-This endpoint is used to submit a rate for a product, the payload example is represented below:
-
-```javascript
-{
-"user_id": 10, // Identifier of principal user
-"product_id": 20, // Identifier of product
-"is_buyer": false, // Either the principal had previously bought this product
-"rate": 5 // The rate value, ranging from 1-5
 }
 ```
 
