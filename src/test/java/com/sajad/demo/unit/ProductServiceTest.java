@@ -3,11 +3,12 @@ package com.sajad.demo.unit;
 import com.google.common.collect.ImmutableList;
 import com.querydsl.core.BooleanBuilder;
 import com.sajad.demo.domain.*;
-import com.sajad.demo.helper.DummyGenerator;
+import com.sajad.demo.exception.CommentNotAllowedException;
+import com.sajad.demo.exception.RateNotAllowedException;
+import com.sajad.demo.DummyGenerator;
 import com.sajad.demo.repository.ProductRepository;
 import com.sajad.demo.service.product.ProductService;
 import com.sajad.demo.service.product.SimpleProductService;
-import com.sajad.demo.service.rate.RateService;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -23,8 +24,9 @@ import org.springframework.test.context.junit4.SpringRunner;
 import java.util.*;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.mockito.Matchers.eq;
-import static org.mockito.Mockito.doReturn;
+import static org.mockito.Mockito.*;
 
 @RunWith(SpringRunner.class)
 public class ProductServiceTest {
@@ -51,17 +53,21 @@ public class ProductServiceTest {
         Set<Comment> comments = new HashSet<>();
         comments.add(comment);
 
+        rate = DummyGenerator.getDummyRate(CommentRateStatus.PENDING, user, 4);
+        Set<Rate> rates = new HashSet<>();
+        rates.add(rate);
+
         product = new Product.ProductBuilder()
                 .withName("product 1")
                 .withComments(comments)
-                .withRates(Collections.emptySet())
+                .withRates(rates)
                 .isVisible(true)
                 .isCommentable(true)
-                .isRatableToPublic(true)
+                .isRatable(true)
                 .isRatableToPublic(true)
                 .build();
 
-        rate = DummyGenerator.getDummyRate(product, CommentRateStatus.PENDING, user, 4);
+
     }
 
     @Test
@@ -78,11 +84,49 @@ public class ProductServiceTest {
         assertThat(products.getContent().size()).isEqualTo(1);
         assertThat(products.getContent().iterator().next()).isEqualTo(product);
         assertThat(products.getContent().iterator().next().getName()).isEqualTo(product.getName());
-        assertThat(products.getContent().iterator().next().getRates()).isEmpty();
         assertThat(products.getContent().iterator().next().getComments().size()).isEqualTo(1);
         assertThat(products.getContent().iterator().next().getComments().iterator().next()).isEqualTo(comment);
+        assertThat(products.getContent().iterator().next().getRates().size()).isEqualTo(1);
+        assertThat(products.getContent().iterator().next().getRates().iterator().next()).isEqualTo(rate);
     }
 
+    @Test
+    public void addComment_OnCommentableProduct_ShouldBeSucceed() throws CommentNotAllowedException {
+        productService.newComment(product, comment, true);
+
+        verify(productRepositoryMock, times(1)).save(product);
+        verifyNoMoreInteractions(productRepositoryMock);
+    }
+
+    @Test
+    public void addComment_NotCommentableProduct_ShouldNotAllowed() throws CommentNotAllowedException {
+        product.setCommentable(false);
+
+        assertThatExceptionOfType(CommentNotAllowedException.class)
+                .isThrownBy(() -> productService.newComment(product, comment, true))
+                .as("Can't put comment on this product");
+
+        verifyNoInteractions(productRepositoryMock);
+    }
+
+    @Test
+    public void rateProduct_OnRatableProduct_ShouldBeSucceed() throws RateNotAllowedException {
+        productService.newRate(product, rate, true);
+
+        verify(productRepositoryMock, times(1)).save(product);
+        verifyNoMoreInteractions(productRepositoryMock);
+    }
+
+    @Test
+    public void rateProduct_NotRatableProduct_ShouldNotAllowed() {
+        product.setRatable(false);
+
+        assertThatExceptionOfType(RateNotAllowedException.class)
+                .isThrownBy(() -> productService.newRate(product, rate, true))
+                .as("Can't rate to this product");
+
+        verifyNoInteractions(productRepositoryMock);
+    }
 
     @TestConfiguration
     static class TestConfig {

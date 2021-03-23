@@ -22,9 +22,6 @@ public class User implements Serializable {
     @NotNull
     private String username;
 
-    public Long getId() {
-        return id;
-    }
 
     public String getUsername() {
         return username;
@@ -32,5 +29,16 @@ public class User implements Serializable {
 
     public void setUsername(String username) {
         this.username = username;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    /**
+     * This is used for testing purposes, can be removed by using something like ReflectionTestUtils
+     */
+    public void setId(Long id) {
+        this.id = id;
     }
 }

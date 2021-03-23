@@ -1,13 +1,17 @@
-package com.sajad.demo.helper;
+package com.sajad.demo;
 
 import com.sajad.demo.domain.*;
 
 import java.util.Date;
 
+/**
+ * Responsible for creating dummy objects used in test suites.
+ */
 public class DummyGenerator {
 
     public static User getDummyUser(String username) {
         User user = new User();
+        user.setId(1L);
         user.setUsername(username);
 
         return user;
@@ -23,9 +27,9 @@ public class DummyGenerator {
         return comment;
     }
 
-    public static Rate getDummyRate(Product product, CommentRateStatus status, User user, int value) {
+    public static Rate getDummyRate(CommentRateStatus status, User user, int value) {
         Rate rate = new Rate();
-//        rate.setProduct(product);
+        rate.setId(2L);
         rate.setUser(user);
         rate.setValue(value);
         rate.setStatus(status);

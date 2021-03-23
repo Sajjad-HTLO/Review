@@ -70,4 +70,11 @@ public class Rate implements Serializable {
     public void setDate(Date date) {
         this.date = date;
     }
+
+    /**
+     * This is used for testing purposes, can be removed by using something like ReflectionTestUtils
+     */
+    public void setId(long id) {
+        this.id = id;
+    }
 }
