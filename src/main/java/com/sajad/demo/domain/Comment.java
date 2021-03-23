@@ -67,4 +67,8 @@ public class Comment implements Serializable {
     public void setStatus(CommentRateStatus status) {
         this.status = status;
     }
+
+    public void setId(long id) {
+        this.id = id;
+    }
 }

@@ -39,15 +39,13 @@ public class ProductServiceTest {
 
     private Product product;
 
-    private User user;
-
     private Comment comment;
 
     private Rate rate;
 
     @Before
     public void setup() {
-        user = DummyGenerator.getDummyUser("user1");
+        User user = DummyGenerator.getDummyUser("user1");
         comment = DummyGenerator.getDummyComment("cn1", CommentRateStatus.VERIFIED, user);
 
         Set<Comment> comments = new HashSet<>();
@@ -66,8 +64,6 @@ public class ProductServiceTest {
                 .isRatable(true)
                 .isRatableToPublic(true)
                 .build();
-
-
     }
 
     @Test

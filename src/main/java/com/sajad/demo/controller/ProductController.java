@@ -85,7 +85,9 @@ public class ProductController {
      * @return 204 status if successful.
      */
     @PostMapping("/{product-id}/comments")
-    public ResponseEntity newProductComment(@PathVariable("product-id") long id, @Validated @RequestBody CommentNewDto newDto) throws CommentNotAllowedException {
+    public ResponseEntity newProductComment(@PathVariable("product-id") long id,
+                                            @Validated @RequestBody CommentNewDto newDto)
+            throws CommentNotAllowedException {
         Comment newComment = commentConverters.getByNewDto(newDto);
         Product product = productService.getById(id).orElseThrow(ResourceNotFoundException::new);
 

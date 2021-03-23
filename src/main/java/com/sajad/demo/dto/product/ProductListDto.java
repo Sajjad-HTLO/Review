@@ -1,5 +1,6 @@
 package com.sajad.demo.dto.product;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.sajad.demo.dto.comment.CommentDto;
 
 import java.util.ArrayList;
@@ -14,14 +15,19 @@ public class ProductListDto {
 
     private String name;
 
+    @JsonProperty("is_visible")
     private boolean isVisible;
 
+    @JsonProperty("is_commentable")
     private boolean isCommentable;
 
+    @JsonProperty("is_ratable")
     private boolean isRatable;
 
+    @JsonProperty("commentable_to_public")
     private boolean commentableToPublic;
 
+    @JsonProperty("ratable_to_public")
     private boolean ratableToPublic;
 
     /**
@@ -32,11 +38,13 @@ public class ProductListDto {
     /**
      * Average of given rates for this product
      */
+    @JsonProperty("rates_average")
     private double ratesAverage;
 
     /**
      * Count of verified comments
      */
+    @JsonProperty("comments_count")
     private int commentsCount;
 
     public boolean isVisible() {

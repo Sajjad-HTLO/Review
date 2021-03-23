@@ -39,10 +39,8 @@ public class RateConverters {
         // An automatic unboxing happens here
         rate.setValue(newDto.getRate());
 
-        Optional<User> userOptional = userService.getById(newDto.getUserId());
-
-        // Should make another decision if the user has been deleted anyway
-        userOptional.ifPresent(rate::setUser);
+        User user = userService.getById(newDto.getUserId()).orElseThrow(ResourceNotFoundException::new);
+        rate.setUser(user);
 
         return rate;
     }

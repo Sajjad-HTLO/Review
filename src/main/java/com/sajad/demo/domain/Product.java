@@ -129,6 +129,10 @@ public class Product implements Serializable {
         RatableToPublic = ratableToPublic;
     }
 
+    private void setId(long id) {
+        this.id = id;
+    }
+
     public static class ProductBuilder {
         private boolean visible;
 
@@ -140,11 +144,18 @@ public class Product implements Serializable {
 
         private boolean ratableToPublic;
 
+        private long id;
+
         private String name;
 
         private Set<Comment> comments;
 
         private Set<Rate> rates;
+
+        public ProductBuilder withId(long id) {
+            this.id = id;
+            return this;
+        }
 
         public ProductBuilder withName(String name) {
             this.name = name;
@@ -189,6 +200,7 @@ public class Product implements Serializable {
         public Product build() {
             Product product = new Product();
 
+            product.setId(id);
             product.setName(name);
             product.setVisible(visible);
             product.setCommentable(commentable);

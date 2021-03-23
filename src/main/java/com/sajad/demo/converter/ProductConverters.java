@@ -30,7 +30,6 @@ public class ProductConverters {
 
         product.setVisible(updateDto.isVisible());
 
-
         return product;
     }
 

@@ -19,6 +19,7 @@ public class DummyGenerator {
 
     public static Comment getDummyComment(String content, CommentRateStatus status, User user) {
         Comment comment = new Comment();
+        comment.setId(2L);
         comment.setContent(content);
         comment.setStatus(status);
         comment.setUser(user);

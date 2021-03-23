@@ -57,7 +57,8 @@ public class SimpleProductService implements ProductService {
             throw new RateNotAllowedException();
 
         // Check for duplicate rate and update the rate value
-        Optional<Rate> duplicate= product.getRates().stream().filter(rate -> rate.getUser().getId().equals(newRate.getUser().getId()))
+        Optional<Rate> duplicate= product.getRates().stream()
+                .filter(rate -> rate.getUser().getId().equals(newRate.getUser().getId()))
                 .findFirst();
 
         if (duplicate.isPresent()) {
