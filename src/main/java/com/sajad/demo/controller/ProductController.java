@@ -1,10 +1,19 @@
 package com.sajad.demo.controller;
 
 import com.querydsl.core.types.Predicate;
+import com.sajad.demo.converter.CommentConverters;
 import com.sajad.demo.converter.ProductConverters;
+import com.sajad.demo.converter.RateConverters;
+import com.sajad.demo.domain.Comment;
 import com.sajad.demo.domain.Product;
+import com.sajad.demo.domain.Rate;
+import com.sajad.demo.dto.comment.CommentNewDto;
 import com.sajad.demo.dto.product.ProductListDto;
 import com.sajad.demo.dto.product.ProductUpdateDto;
+import com.sajad.demo.dto.rate.RateNewDto;
+import com.sajad.demo.exception.CommentNotAllowedException;
+import com.sajad.demo.exception.RateNotAllowedException;
+import com.sajad.demo.exception.ResourceNotFoundException;
 import com.sajad.demo.service.product.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
@@ -28,10 +37,17 @@ public class ProductController {
 
     private final ProductConverters productConverters;
 
+    private final CommentConverters commentConverters;
+
+    private final RateConverters rateConverters;
+
     @Autowired
-    public ProductController(ProductService productService, ProductConverters productConverters) {
+    public ProductController(ProductService productService, ProductConverters productConverters,
+                             CommentConverters commentConverters, RateConverters rateConverters) {
         this.productService = productService;
         this.productConverters = productConverters;
+        this.commentConverters = commentConverters;
+        this.rateConverters = rateConverters;
     }
 
     @GetMapping
@@ -58,6 +74,39 @@ public class ProductController {
         Product updated = productConverters.convertFromUpdateDto(updateDto, id);
 
         productService.persistUpdatedProduct(updated);
+
+        return ResponseEntity.noContent().build();
+    }
+
+    /**
+     * The user issues a new (unverified) comment for a product.
+     * (We may want to prevent repeated commenting as well)
+     *
+     * @return 204 status if successful.
+     */
+    @PostMapping("/{product-id}/comments")
+    public ResponseEntity newProductComment(@PathVariable("product-id") long id, @Validated @RequestBody CommentNewDto newDto) throws CommentNotAllowedException {
+        Comment newComment = commentConverters.getByNewDto(newDto);
+        Product product = productService.getById(id).orElseThrow(ResourceNotFoundException::new);
+
+        productService.newComment(product, newComment, newDto.getIsBuyer());
+
+        return ResponseEntity.noContent().build();
+    }
+
+    /**
+     * The user issues a new (unverified) comment for a product.
+     * (We may want to prevent repeated commenting as well)
+     *
+     * @return 204 status if successful.
+     */
+    @PostMapping("/{product-id}/rates")
+    public ResponseEntity newProductRate(@PathVariable("product-id") long id, @Validated @RequestBody RateNewDto newDto)
+            throws RateNotAllowedException {
+        Rate newRate = rateConverters.fromNewDto(newDto);
+        Product product = productService.getById(id).orElseThrow(ResourceNotFoundException::new);
+
+        productService.newRate(product, newRate, newDto.getIsBuyer());
 
         return ResponseEntity.noContent().build();
     }

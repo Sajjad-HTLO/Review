@@ -2,7 +2,9 @@ package com.sajad.demo.service.comment;
 
 import com.querydsl.core.types.Predicate;
 import com.sajad.demo.domain.Comment;
+import com.sajad.demo.domain.CommentRateStatus;
 import com.sajad.demo.repository.CommentRepository;
+import com.sajad.demo.service.product.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -36,7 +38,8 @@ public class SimpleCommentService implements CommentService {
     }
 
     @Override
-    public void persistNewComment(Comment comment) {
+    public void updateCommentStatus(Comment comment, CommentRateStatus decision) {
+        comment.setStatus(decision);
         commentRepository.save(comment);
     }
 }

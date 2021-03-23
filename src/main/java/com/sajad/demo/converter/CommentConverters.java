@@ -16,23 +16,17 @@ public class CommentConverters {
 
     private final UserService userService;
 
-    private final ProductService productService;
-
     @Autowired
-    public CommentConverters(UserService userService, ProductService productService) {
+    public CommentConverters(UserService userService) {
         this.userService = userService;
-        this.productService = productService;
     }
 
     public Comment getByNewDto(CommentNewDto newDto) {
         User commentOwner = userService.getById(newDto.getUserId()).orElseThrow(ResourceNotFoundException::new);
-        Product product = productService.getById(newDto.getProductId()).orElseThrow(ResourceNotFoundException::new);
 
         Comment comment = new Comment();
-
         comment.setContent(newDto.getContent());
         comment.setUser(commentOwner);
-        comment.setProduct(product);
 
         return comment;
     }

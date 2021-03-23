@@ -17,10 +17,6 @@ public class ContextDto {
     @JsonAlias("is_buyer")
     private Boolean isBuyer;
 
-    @NotNull
-    @JsonAlias("product_id")
-    private Long productId;
-
     public Long getUserId() {
         return userId;
     }
@@ -35,13 +31,5 @@ public class ContextDto {
 
     public void setIsBuyer(Boolean isBuyer) {
         this.isBuyer = isBuyer;
-    }
-
-    public Long getProductId() {
-        return productId;
-    }
-
-    public void setProductId(Long productId) {
-        this.productId = productId;
     }
 }

@@ -128,4 +128,77 @@ public class Product implements Serializable {
     public void setRatableToPublic(boolean ratableToPublic) {
         RatableToPublic = ratableToPublic;
     }
+
+    public static class ProductBuilder {
+        private boolean visible;
+
+        private boolean commentable;
+
+        private boolean ratable;
+
+        private boolean commentableToPublic;
+
+        private boolean ratableToPublic;
+
+        private String name;
+
+        private Set<Comment> comments;
+
+        private Set<Rate> rates;
+
+        public ProductBuilder withName(String name) {
+            this.name = name;
+            return this;
+        }
+
+        public ProductBuilder isVisible(boolean visible) {
+            this.visible = visible;
+            return this;
+        }
+
+        public ProductBuilder isCommentable(boolean commentable) {
+            this.commentable = commentable;
+            return this;
+        }
+
+        public ProductBuilder isRatable(boolean ratable) {
+            this.ratable = ratable;
+            return this;
+        }
+
+        public ProductBuilder isCommentableToPublic(boolean commentableToPublic) {
+            this.commentableToPublic = commentableToPublic;
+            return this;
+        }
+
+        public ProductBuilder isRatableToPublic(boolean ratableToPublic) {
+            this.ratableToPublic = ratableToPublic;
+            return this;
+        }
+
+        public ProductBuilder withComments(Set<Comment> comments) {
+            this.comments = comments;
+            return this;
+        }
+
+        public ProductBuilder withRates(Set<Rate> rates) {
+            this.rates = rates;
+            return this;
+        }
+
+        public Product build() {
+            Product product = new Product();
+
+            product.setName(name);
+            product.setVisible(visible);
+            product.setCommentable(commentable);
+            product.setCommentableToPublic(commentableToPublic);
+            product.setRatable(ratable);
+            product.setRatableToPublic(ratableToPublic);
+            product.setComments(comments);
+            product.setRates(rates);
+
+            return product;
+        }
+    }
 }

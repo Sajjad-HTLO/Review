@@ -20,10 +20,6 @@ public class Rate implements Serializable {
     @JoinColumn(name = "user_id")
     private User user;
 
-    @ManyToOne(optional = false)
-    @JoinColumn(name = "product_id")
-    private Product product;
-
     @NotNull
     private Integer value;
 
@@ -73,13 +69,5 @@ public class Rate implements Serializable {
 
     public void setDate(Date date) {
         this.date = date;
-    }
-
-    public Product getProduct() {
-        return product;
-    }
-
-    public void setProduct(Product product) {
-        this.product = product;
     }
 }

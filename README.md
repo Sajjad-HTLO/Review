@@ -6,28 +6,28 @@ This application is a simple Product-Review service with the below capabilities:
 - Permissible users can put comments|Rates to|on products.
 - Admins can `Approve` or `Reject` the comments | Rates.
 
-# API descriptions:
+# API descriptions
 
-## Product API: 
+## Product API
 
 ```http
 GET /api/products:
 ```
 
-In this endpoint, list of current products will be displayed with the below schema:
+In this endpoint, list of current products will be displayed, below is a sample output for each item of the products:
 
 ```javascript
 {
-"id": 20,
-"name": "p1",
-"commentableToPublic": true,
-"votableToPublic": true,
-"comments": [],
-"ratesAverage": 0,
-"commentsCount": 0,
-"visible": true,
-"commentable": true,
-"ratable": true
+"id": 20, // Product identifier
+"name": "p1", // Product name
+"commentableToPublic": true, // Is product commentable by public users or just buyers can do 
+"ratableToPublic": true, // Is product ratable by public users or just buyers can do 
+"comments": [], // Collection of 3 last (verifie) comments
+"ratesAverage": 3.5, // Average rate of each product
+"commentsCount": 42, // Count of verified comments
+"visible": true, // Either if this product should be visible on the UI
+"commentable": true,  // Either if this product should be commentable
+"ratable": true // Either if this product should be ratable
 }
 ```
 
@@ -39,17 +39,15 @@ This endpoint will be used to change a product's state, e.g., make it visible ,.
 The body payload has the following attributes:
 ```javascript
 {
-"is_visible": true,
-"is_commentable": true,
-"is_commentable_to_pulic": true,
-"is_ratable": true,
-"is_ratable_to_pulic": true
+"is_visible": true, // Make this product visible to users
+"is_commentable": true, // Enable commenting on this product
+"is_commentable_to_pulic": true,  // Make this product commentabl to public 
+"is_ratable": false,  // Disbale rating on this product
+"is_ratable_to_pulic": false // This product is not ratable by public
 }
 ```
 
-
-
-## Comment API:
+## Comment API
 
 ```http
 GET /api/comments:
@@ -83,7 +81,7 @@ This endpoint is used to post a new comment for a product, the payload example i
 ```http
 Put /api/comments/{id}
 ```
-This endpoint will be used to verify or reject a comment
+This endpoint will be used to verify or reject a comment (By an admin user)
 
 The body payload has a single `decision` the attribute:
 ```javascript
@@ -92,3 +90,53 @@ The body payload has a single `decision` the attribute:
 }
 ```
 
+## Rate API
+
+```http
+GET /api/rates:
+```
+In this endpoint, list of rates will be displayed, example:
+
+```javascript
+{
+"id": 10, // Identifier of the persisted rate
+"rate": 3 , // The rate value ranging from 1-5
+"status": "PENDING",  // The rate status, possible values are `PENDING`, `VERIFIED`, `REJECTED`
+"date": 1616151820000 // The EPOCH of the rate submision date
+}
+```
+
+```http
+Post /api/rates
+```
+This endpoint is used to submit a rate for a product, the payload example is represented below:
+
+```javascript
+{
+"user_id": 10, // Identifier of principal user
+"product_id": 20, // Identifier of product
+"is_buyer": false, // Either the principal had previously bought this product
+"rate": 5 // The rate value, ranging from 1-5
+}
+```
+
+```http
+Put /api/rates/{id}
+```
+This endpoint will be used to verify or reject a user `rate` (By an admin user)
+
+The body payload has a single `decision` the attribute:
+```javascript
+{
+"decision": "VERIFIED" // Possible values are `PENDING`, `VERIFIED`, `REJECTED`
+}
+```
+
+## Descriptions
+
+To render the page in the SPA, the `Product` list endpoint (`/api/products`) will be called to get the products with 
+their intrinsic attributes, .e.g, `visible` ,`commentable`, ...
+
+In the admin panel, a call to `/api/comments` and `/api/rates` will cause to get a paged list of the comments,
+The admin can further filter `comments|rates` to see `comments|rates` with special status,
+by passing the `status` query param `?status=PENDING`.

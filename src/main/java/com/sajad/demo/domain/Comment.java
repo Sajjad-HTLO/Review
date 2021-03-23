@@ -20,10 +20,6 @@ public class Comment implements Serializable {
     @JoinColumn(name = "user_id")
     private User user;
 
-    @ManyToOne(optional = false)
-    @JoinColumn(name = "product_id")
-    private Product product;
-
     @NotNull
     private String content;
 
@@ -70,13 +66,5 @@ public class Comment implements Serializable {
 
     public void setStatus(CommentRateStatus status) {
         this.status = status;
-    }
-
-    public Product getProduct() {
-        return product;
-    }
-
-    public void setProduct(Product product) {
-        this.product = product;
     }
 }

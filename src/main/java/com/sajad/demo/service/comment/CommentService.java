@@ -2,6 +2,7 @@ package com.sajad.demo.service.comment;
 
 import com.querydsl.core.types.Predicate;
 import com.sajad.demo.domain.Comment;
+import com.sajad.demo.domain.CommentRateStatus;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -13,5 +14,5 @@ public interface CommentService {
 
     Optional<Comment> getById(long id);
 
-    void persistNewComment(Comment comment);
+    void updateCommentStatus(Comment comment, CommentRateStatus decision);
 }

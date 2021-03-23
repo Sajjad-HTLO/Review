@@ -15,8 +15,6 @@ import java.util.Optional;
 public interface RateRepository extends JpaRepository<Rate, Long>, QuerydslPredicateExecutor<Rate>,
         QuerydslBinderCustomizer<QRate> {
 
-    Optional<Rate> findByUserIdAndProductId(long userId, long productId);
-
     @Override
     @SuppressWarnings("unchecked")
     default void customize(QuerydslBindings bindings, QRate rate) {

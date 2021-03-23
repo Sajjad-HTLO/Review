@@ -60,7 +60,7 @@ public class ProductConverters {
             listDto.setRatable(true);
 
             if (product.isRatableToPublic())
-                listDto.setVotableToPublic(true);
+                listDto.setRatableToPublic(true);
         }
 
         // Set last 3 verified comments (SORTED BY DATE)

@@ -28,16 +28,9 @@ public class CommentController {
 
     private final CommentService commentService;
 
-    private final ProductService productService;
-
-    private final CommentConverters commentConverters;
-
     @Autowired
-    public CommentController(CommentService commentService, ProductService productService,
-                             CommentConverters commentConverters) {
+    public CommentController(CommentService commentService) {
         this.commentService = commentService;
-        this.productService = productService;
-        this.commentConverters = commentConverters;
     }
 
     /**
@@ -54,40 +47,13 @@ public class CommentController {
     }
 
     /**
-     * The user issues a new (unverified) comment for a product.
-     * (We may want to prevent repeated commenting as well)
-     *
-     * @return 204 status if successful.
-     */
-    @PostMapping
-    public ResponseEntity newComment(@Validated @RequestBody CommentNewDto newDto) throws CommentNotAllowedException {
-        Product product = productService.getById(newDto.getProductId()).orElseThrow(ResourceNotFoundException::new);
-
-        /*
-        Check the commenting rules
-        If the product is commentable to the previous buyers only, complain if the principal is
-        not previously bought this product
-         */
-        if (Utility.isCommentingRulesViolated(product, newDto.getIsBuyer()))
-            throw new CommentNotAllowedException();
-
-        Comment newComment = commentConverters.getByNewDto(newDto);
-
-        product.getComments().add(newComment);
-        productService.persistUpdatedProduct(product);
-
-        return ResponseEntity.noContent().build();
-    }
-
-    /**
      * Update (Approve or Reject) a comment's state (By an admin of course)
      */
     @PutMapping("/{id}")
     public ResponseEntity updateCommentStatus(@PathVariable long id, @Validated @RequestBody DecisionDto updateDto) {
         Comment comment = commentService.getById(id).orElseThrow(ResourceNotFoundException::new);
-        comment.setStatus(updateDto.getDecision());
 
-        commentService.persistNewComment(comment);
+        commentService.updateCommentStatus(comment, updateDto.getDecision());
 
         return ResponseEntity.noContent().build();
     }

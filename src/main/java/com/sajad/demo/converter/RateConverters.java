@@ -18,12 +18,9 @@ public class RateConverters {
 
     private final UserService userService;
 
-    private final ProductService productService;
-
     @Autowired
-    public RateConverters(UserService userService, ProductService productService) {
+    public RateConverters(UserService userService) {
         this.userService = userService;
-        this.productService = productService;
     }
 
     public static RateDto fromRate(Rate rate) {
@@ -38,11 +35,7 @@ public class RateConverters {
     }
 
     public Rate fromNewDto(RateNewDto newDto) {
-        Product product = productService.getById(newDto.getProductId()).orElseThrow(ResourceNotFoundException::new);
-
         Rate rate = new Rate();
-        rate.setProduct(product);
-
         // An automatic unboxing happens here
         rate.setValue(newDto.getRate());
 

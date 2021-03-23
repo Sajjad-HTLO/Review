@@ -22,7 +22,7 @@ public class ProductListDto {
 
     private boolean commentableToPublic;
 
-    private boolean votableToPublic;
+    private boolean ratableToPublic;
 
     /**
      * Last 3 comments
@@ -55,12 +55,12 @@ public class ProductListDto {
         this.commentableToPublic = commentableToPublic;
     }
 
-    public boolean isVotableToPublic() {
-        return votableToPublic;
+    public boolean isRatableToPublic() {
+        return ratableToPublic;
     }
 
-    public void setVotableToPublic(boolean votableToPublic) {
-        this.votableToPublic = votableToPublic;
+    public void setRatableToPublic(boolean ratableToPublic) {
+        this.ratableToPublic = ratableToPublic;
     }
 
     public long getId() {

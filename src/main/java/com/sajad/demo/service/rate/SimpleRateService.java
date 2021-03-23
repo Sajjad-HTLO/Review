@@ -1,8 +1,10 @@
 package com.sajad.demo.service.rate;
 
 import com.querydsl.core.types.Predicate;
+import com.sajad.demo.domain.CommentRateStatus;
 import com.sajad.demo.domain.Rate;
 import com.sajad.demo.repository.RateRepository;
+import com.sajad.demo.service.product.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -30,16 +32,9 @@ public class SimpleRateService implements RateService {
         return rateRepository.findById(id);
     }
 
-    /**
-     * This is used to detect duplicate voting.
-     */
     @Override
-    public Optional<Rate> getByUserIdAndProductId(long userId, long productId) {
-        return rateRepository.findByUserIdAndProductId(userId, productId);
-    }
-
-    @Override
-    public void persistNewRate(Rate newRate) {
-        rateRepository.save(newRate);
+    public void updateRateStatus(Rate rate, CommentRateStatus decision) {
+        rate.setStatus(decision);
+        rateRepository.save(rate);
     }
 }

@@ -65,6 +65,63 @@ paths:
           description: Requested object not found.
         500:
           description: Internal server error.
+
+  /products/{id}/comments:
+    post:
+      description:
+        To ceate a new comment for a product
+      tags:
+        - Comment
+      parameters:
+        - name: id
+          in: path
+          type: string
+          required: true
+          description: id of specific product
+        - name: body
+          in: body
+          required: true
+          description: New comment payload
+          schema:
+            $ref: "#/definitions/NewComment"
+      responses:
+        204:
+          description: The operation was successful.
+        400:
+          description: Bad request, id is invalid.
+        404:
+          description: Requested object not found.
+        500:
+          description: Internal server error.
+
+  /products/{id}/rates:
+    post:
+      description:
+        To rate a product
+      tags:
+        - Rate
+      parameters:
+        - name: id
+          in: path
+          type: string
+          required: true
+          description: id of specific product
+        - name: body
+          in: body
+          required: true
+          description: New rate payload
+          schema:
+            $ref: "#/definitions/NewRate"
+      responses:
+        204:
+          description: The operation was successful.
+        400:
+          description: Bad request, id is invalid.
+        404:
+          description: Requested object not found.
+        500:
+          description: Internal server error.
+
   /comments:
     get:
       description:
@@ -95,27 +152,27 @@ paths:
           description: Requested object not found.
         500:
           description: Internal server error.
-    post:
-      description:
-        To ceate a new comments
-      tags:
-        - Comment
-      parameters:
-        - name: body
-          in: body
-          required: true
-          description: New comment payload
-          schema:
-            $ref: "#/definitions/NewComment"
-      responses:
-        204:
-          description: The operation was successful.
-        400:
-          description: Bad request, id is invalid.
-        404:
-          description: Requested object not found.
-        500:
-          description: Internal server error.
+#    post:
+#      description:
+#        To ceate a new comments
+#      tags:
+#        - Comment
+#      parameters:
+#        - name: body
+#          in: body
+#          required: true
+#          description: New comment payload
+#          schema:
+#            $ref: "#/definitions/NewComment"
+#      responses:
+#        204:
+#          description: The operation was successful.
+#        400:
+#          description: Bad request, id is invalid.
+#        404:
+#          description: Requested object not found.
+#        500:
+#          description: Internal server error.
 
   /comments/{id}:
     put:
@@ -170,27 +227,27 @@ paths:
           description: Requested object not found.
         500:
           description: Internal server error.
-    post:
-      description:
-        To rate a product
-      tags:
-        - Rate
-      parameters:
-        - name: body
-          in: body
-          required: true
-          description: New rate payload
-          schema:
-            $ref: "#/definitions/NewRate"
-      responses:
-        204:
-          description: The operation was successful.
-        400:
-          description: Bad request, id is invalid.
-        404:
-          description: Requested object not found.
-        500:
-          description: Internal server error.
+#    post:
+#      description:
+#        To rate a product
+#      tags:
+#        - Rate
+#      parameters:
+#        - name: body
+#          in: body
+#          required: true
+#          description: New rate payload
+#          schema:
+#            $ref: "#/definitions/NewRate"
+#      responses:
+#        204:
+#          description: The operation was successful.
+#        400:
+#          description: Bad request, id is invalid.
+#        404:
+#          description: Requested object not found.
+#        500:
+#          description: Internal server error.
 
   /rates/{id}:
     put:
@@ -302,9 +359,6 @@ definitions:
       user_id:
         type: integer
         description: The principal user id
-      product_id:
-        type: integer
-        description: The product identifier which the user is commenting one
       content:
         type: string
       is_buyer:
@@ -344,16 +398,13 @@ definitions:
         type: integer
         description: The date in EPOCH representation
 
-  newRate:
+  NewRate:
     type: object
-    description: New rate payload
+    description: New Comment payload
     properties:
       user_id:
         type: integer
         description: The principal user id
-      product_id:
-        type: integer
-        description: The product identifier which the user is rating on
       rate:
         type: integer
       is_buyer:

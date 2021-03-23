@@ -28,17 +28,11 @@ import static com.sajad.demo.helper.Constants.UrlMappings.RATES_API;
 @RequestMapping(RATES_API)
 public class RateController {
 
-    private final ProductService productService;
-
     private final RateService rateService;
 
-    private final RateConverters rateConverters;
-
     @Autowired
-    public RateController(ProductService productService, RateService rateService, RateConverters rateConverters) {
-        this.productService = productService;
+    public RateController(RateService rateService) {
         this.rateService = rateService;
-        this.rateConverters = rateConverters;
     }
 
     /**
@@ -58,55 +52,12 @@ public class RateController {
     }
 
     /**
-     * Endpoint to intercept a new ate for a product.
-     *
-     * @param newDto
-     * @return
-     * @throws RateNotAllowedException The product is not votable.
-     */
-    @PostMapping
-    public ResponseEntity newRate(@Validated @RequestBody RateNewDto newDto) throws RateNotAllowedException {
-        Product product = productService.getById(newDto.getProductId()).orElseThrow(ResourceNotFoundException::new);
-
-        /*
-        Check the rating rules
-        I didn't move this checking to voting service layer, because I don't like passing the dto instance to
-        the service layer.
-        As a predefined rule for repeated rating, we re-write the rate
-         */
-        if (Utility.isRatingRulesViolated(product, newDto.getIsBuyer()))
-            throw new RateNotAllowedException();
-
-        // Check for duplicate rate and update the rate value
-        Optional<Rate> duplicate = rateService.getByUserIdAndProductId(newDto.getUserId(), newDto.getProductId());
-
-        if (duplicate.isPresent()) {
-            duplicate.ifPresent(updatedRate ->
-                    product.getRates().stream()
-                            // We're sure there duplicate rate exist
-                            .filter(rate -> rate.getId().equals(updatedRate.getId()))
-                            .findFirst().get()
-                            .setValue(newDto.getRate()));
-        } else {
-            Rate newRate = rateConverters.fromNewDto(newDto);
-            product.getRates().add(newRate);
-        }
-
-        productService.persistUpdatedProduct(product);
-
-        return ResponseEntity.noContent().build();
-    }
-
-    /**
      * Update (Approve or Reject) a given rate. (By an admin)
      */
     @PutMapping("/{id}")
     public ResponseEntity updateRateStatus(@PathVariable long id, @Validated @RequestBody DecisionDto decisionDto) {
         Rate rate = rateService.getById(id).orElseThrow(ResourceNotFoundException::new);
-
-        rate.setStatus(decisionDto.getDecision());
-
-        rateService.persistNewRate(rate);
+        rateService.updateRateStatus(rate, decisionDto.getDecision());
 
         return ResponseEntity.noContent().build();
     }
