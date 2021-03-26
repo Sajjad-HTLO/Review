@@ -76,7 +76,7 @@ Rate a product, the payload example is represented below:
 ## Comment API
 
 ```http
-GET /api/comments:
+GET /api/comments
 ```
 
 In this endpoint, list of comments will be displayed, example:
@@ -105,7 +105,7 @@ The body payload has a single `decision` the attribute:
 ## Rate API
 
 ```http
-GET /api/rates:
+GET /api/rates
 ```
 In this endpoint, list of rates will be displayed, example:
 
