@@ -2,8 +2,8 @@
 This application is a simple Product-Review service with the below capabilities:
 
 - Show|Hide products to be visible
-- Make products commentable | Ratable to public or to buyers only.
-- Permissible users can put comments|Rates to|on products.
+- Make products `commentable` | `ratable` to public or to `buyers` only.
+- Permissible users can put `comments|Rates` on|to products.
 - Admins can `Approve` or `Reject` the comments | Rates.
 
 # API descriptions
