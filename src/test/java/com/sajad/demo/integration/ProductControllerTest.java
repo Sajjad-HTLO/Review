@@ -1,7 +1,6 @@
 package com.sajad.demo.integration;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.collect.ImmutableList;
 import com.querydsl.core.types.Predicate;
 import com.sajad.demo.DummyGenerator;
@@ -10,7 +9,6 @@ import com.sajad.demo.converter.CommentConverters;
 import com.sajad.demo.converter.ProductConverters;
 import com.sajad.demo.converter.RateConverters;
 import com.sajad.demo.domain.*;
-import com.sajad.demo.dto.DecisionDto;
 import com.sajad.demo.dto.comment.CommentNewDto;
 import com.sajad.demo.dto.product.ProductUpdateDto;
 import com.sajad.demo.dto.rate.RateNewDto;
@@ -29,29 +27,26 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Import;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.web.config.EnableSpringDataWebSupport;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.util.ReflectionTestUtils;
-import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
-import org.springframework.test.web.servlet.result.PrintingResultHandler;
 
-import java.util.*;
+import java.util.HashSet;
+import java.util.Optional;
+import java.util.Set;
 
 import static com.sajad.demo.helper.Constants.ErrorMessages.COMMENT_NOT_ALLOWED_MSG;
 import static com.sajad.demo.helper.Constants.ErrorMessages.RATE_NOT_ALLOWED_MSG;
 import static com.sajad.demo.helper.Constants.UrlMappings.PRODUCT_API;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
-import static org.mockito.Matchers.*;
+import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.doReturn;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebMvcTest(value = ProductController.class)
-@EnableSpringDataWebSupport
 @Import(value = {ProductConverters.class, CommentConverters.class, RateConverters.class})
 @RunWith(SpringRunner.class)
 public class ProductControllerTest extends BaseTest {
@@ -94,7 +89,7 @@ public class ProductControllerTest extends BaseTest {
     }
 
     @Test
-    public void getProductsList_HaseOnProduct_ShouldReturnList() throws Exception {
+    public void getProductsList_HasOnProduct_ShouldReturnList() throws Exception {
         doReturn(new PageImpl<>(ImmutableList.of(dummyProduct)))
                 .when(productRepositoryMock).findAll(any(Predicate.class), any(Pageable.class));
 

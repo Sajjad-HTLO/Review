@@ -5,17 +5,13 @@ import com.google.common.collect.ImmutableList;
 import com.querydsl.core.types.Predicate;
 import com.sajad.demo.DummyGenerator;
 import com.sajad.demo.controller.RateController;
-import com.sajad.demo.converter.ProductConverters;
-import com.sajad.demo.converter.RateConverters;
 import com.sajad.demo.domain.CommentRateStatus;
 import com.sajad.demo.domain.Rate;
 import com.sajad.demo.domain.User;
 import com.sajad.demo.dto.DecisionDto;
 import com.sajad.demo.repository.RateRepository;
-import com.sajad.demo.service.product.ProductService;
 import com.sajad.demo.service.rate.RateService;
 import com.sajad.demo.service.rate.SimpleRateService;
-import com.sajad.demo.service.user.UserService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,10 +19,8 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Import;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.web.config.EnableSpringDataWebSupport;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
 
@@ -43,9 +37,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebMvcTest(value = RateController.class)
-@EnableSpringDataWebSupport
-@Import(value = {ProductConverters.class, RateConverters.class})
-@MockBean(classes = {ProductService.class, UserService.class})
 @RunWith(SpringRunner.class)
 public class RateControllerTest extends BaseTest {
 
