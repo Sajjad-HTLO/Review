@@ -28,6 +28,7 @@ import org.springframework.context.annotation.Import;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.MediaType;
+import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.util.ReflectionTestUtils;
 
@@ -49,6 +50,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @WebMvcTest(value = ProductController.class)
 @Import(value = {ProductConverters.class, CommentConverters.class, RateConverters.class})
 @RunWith(SpringRunner.class)
+@MockBean(value = {KafkaTemplate.class})
 public class ProductControllerTest extends BaseTest {
 
     @Autowired
@@ -204,8 +206,8 @@ public class ProductControllerTest extends BaseTest {
     @TestConfiguration
     static class TestConfig {
         @Bean
-        public ProductService testBeanDefinition(ProductRepository productRepository) {
-            return new SimpleProductService(productRepository);
+        public ProductService testBeanDefinition(ProductRepository productRepository, KafkaTemplate kafkaTemplate) {
+            return new SimpleProductService(productRepository, kafkaTemplate);
         }
     }
 }

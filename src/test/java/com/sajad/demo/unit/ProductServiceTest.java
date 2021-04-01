@@ -2,10 +2,10 @@ package com.sajad.demo.unit;
 
 import com.google.common.collect.ImmutableList;
 import com.querydsl.core.BooleanBuilder;
+import com.sajad.demo.DummyGenerator;
 import com.sajad.demo.domain.*;
 import com.sajad.demo.exception.CommentNotAllowedException;
 import com.sajad.demo.exception.RateNotAllowedException;
-import com.sajad.demo.DummyGenerator;
 import com.sajad.demo.repository.ProductRepository;
 import com.sajad.demo.service.product.ProductService;
 import com.sajad.demo.service.product.SimpleProductService;
@@ -19,15 +19,18 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import java.util.*;
+import java.util.HashSet;
+import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.*;
 
+@MockBean(value = {KafkaTemplate.class})
 @RunWith(SpringRunner.class)
 public class ProductServiceTest {
 
@@ -127,8 +130,8 @@ public class ProductServiceTest {
     @TestConfiguration
     static class TestConfig {
         @Bean
-        public ProductService testBeanDefinition(ProductRepository productRepository) {
-            return new SimpleProductService(productRepository);
+        public ProductService testBeanDefinition(ProductRepository productRepository, KafkaTemplate kafkaTemplate) {
+            return new SimpleProductService(productRepository, kafkaTemplate);
         }
     }
 }
