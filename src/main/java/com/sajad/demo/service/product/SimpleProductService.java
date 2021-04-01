@@ -11,6 +11,7 @@ import com.sajad.demo.repository.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -20,9 +21,13 @@ public class SimpleProductService implements ProductService {
 
     private final ProductRepository productRepository;
 
+    private final KafkaTemplate<String, String> kafkaTemplate;
+
     @Autowired
-    public SimpleProductService(ProductRepository productRepository) {
+    public SimpleProductService(ProductRepository productRepository,
+                                KafkaTemplate<String, String> kafkaTemplate) {
         this.productRepository = productRepository;
+        this.kafkaTemplate = kafkaTemplate;
     }
 
     @Override
@@ -43,6 +48,9 @@ public class SimpleProductService implements ProductService {
         product.getComments().add(newComment);
 
         productRepository.save(product);
+
+        // Send an event to notify the admin somehow!
+//        kafkaTemplate.send(KafkaTopics.KAFKA_NEW_COMMENT_TOPIC, "id: " + 20);
     }
 
     @Override
@@ -57,7 +65,7 @@ public class SimpleProductService implements ProductService {
             throw new RateNotAllowedException();
 
         // Check for duplicate rate and update the rate value
-        Optional<Rate> duplicate= product.getRates().stream()
+        Optional<Rate> duplicate = product.getRates().stream()
                 .filter(rate -> rate.getUser().getId().equals(newRate.getUser().getId()))
                 .findFirst();
 

@@ -22,4 +22,8 @@ public class Constants {
 
         public static final String ENTITY_NOT_FOUND_MSG = "Entity not found";
     }
+
+    public static class KafkaTopics {
+        public static final String KAFKA_NEW_COMMENT_TOPIC = "-comments";
+    }
 }

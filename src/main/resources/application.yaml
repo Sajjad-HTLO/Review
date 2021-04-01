@@ -14,3 +14,7 @@ spring:
   h2:
     console:
       enabled: true
+
+# Enable when you make sure a Kafka instance is up and running in the specific address
+#kafka:
+#  bootstrapAddress: 0.0.0.0:9092
