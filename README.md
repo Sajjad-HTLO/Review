@@ -6,6 +6,8 @@ This application is a simple Product-Review service with the below capabilities:
 - Permissible users can put `comments|Rates` on|to products.
 - Admins can `Approve` or `Reject` the comments | Rates.
 
+A `Kafka broker` used to notify the Admin(somehow!) about the new comments.
+
 # API descriptions
 
 ## Product API
