@@ -152,28 +152,6 @@ paths:
           description: Requested object not found.
         500:
           description: Internal server error.
-#    post:
-#      description:
-#        To ceate a new comments
-#      tags:
-#        - Comment
-#      parameters:
-#        - name: body
-#          in: body
-#          required: true
-#          description: New comment payload
-#          schema:
-#            $ref: "#/definitions/NewComment"
-#      responses:
-#        204:
-#          description: The operation was successful.
-#        400:
-#          description: Bad request, id is invalid.
-#        404:
-#          description: Requested object not found.
-#        500:
-#          description: Internal server error.
-
   /comments/{id}:
     put:
       tags:
