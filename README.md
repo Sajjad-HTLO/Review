@@ -1,12 +1,10 @@
-# Review
+# Product Review Service
 This application is a simple Product-Review service with the below capabilities:
 
-- Show|Hide products to be visible
+- Show | Hide products to be visible
 - Make products `commentable` | `ratable` to public or to `buyers` only.
-- Permissible users can put `comments|Rates` on|to products.
-- Admins can `Approve` or `Reject` the comments | Rates.
-
-A `Kafka broker` used to notify the Admin(somehow!) about the new comments.
+- Permissible users can put | give `comment(s) | rate(s)` on | to products.
+- Admins can `Approve` or `Reject` the (pending) comment(s) | rate(s).
 
 # API descriptions
 
@@ -20,16 +18,16 @@ In this endpoint, list of current products will be displayed, below is a sample 
 
 ```javascript
 {
-"id": 20, // Product identifier
-"name": "p1", // Product name
-"commentableToPublic": true, // Is product commentable by public users or just buyers can do 
-"ratableToPublic": true, // Is product ratable by public users or just buyers can do 
-"comments": [], // Collection of 3 last (verifie) comments
-"ratesAverage": 3.5, // Average rate of each product
-"commentsCount": 42, // Count of verified comments
-"visible": true, // Either if this product should be visible on the UI
-"commentable": true,  // Either if this product should be commentable
-"ratable": true // Either if this product should be ratable
+  "id": 20,                    // Product identifier
+  "name": "p1",                // Product name
+  "commentableToPublic": true, // Is product commentable by public users or just buyers can do 
+  "ratableToPublic": true,     // Is product ratable by public users or just buyers can do 
+  "comments": [],              // Collection of 3 last (verifie) comments
+  "ratesAverage": 3.5,         // Average rate of each product
+  "commentsCount": 42,         // Count of verified comments
+  "visible": true,             // Either if this product should be visible on the UI
+  "commentable": true,         // Either if this product should be commentable
+  "ratable": true              // Either if this product should be ratable
 }
 ```
 
@@ -41,11 +39,11 @@ This endpoint will be used to change a product's state, e.g., make it visible ,.
 The body payload has the following attributes:
 ```javascript
 {
-"is_visible": true, // Make this product visible to users
-"is_commentable": true, // Enable commenting on this product
-"is_commentable_to_pulic": true,  // Make this product commentabl to public 
-"is_ratable": false,  // Disbale rating on this product
-"is_ratable_to_pulic": false // This product is not ratable by public
+  "is_visible": true,               // Make this product visible to users
+  "is_commentable": true,           // Enable commenting on this product
+  "is_commentable_to_pulic": true,  // Make this product commentabl to public 
+  "is_ratable": false,              // Disbale rating on this product
+  "is_ratable_to_pulic": false      // This product is not ratable by public
 }
 ```
 
@@ -56,9 +54,9 @@ post a new comment for a product, the payload example is represented below:
 
 ```javascript
 {
-"user_id": 10, // Identifier of principal user
-"is_buyer": false, // Either the principal had previously bought this product
-"content": "The comment content" // The comment  content
+  "user_id": 10,                      // Identifier of principal user
+  "is_buyer": false,                  // Either the principal had previously bought this product
+  "content": "The comment content"    // The comment  content
 }
 ```
 
@@ -69,9 +67,9 @@ Rate a product, the payload example is represented below:
 
 ```javascript
 {
-"user_id": 10, // Identifier of principal user
-"is_buyer": false, // Either the principal had previously bought this product
-"rate": 5 // The rate value, ranging from 1-5
+  "user_id": 10,               // Identifier of principal user
+  "is_buyer": false,           // Either the principal had previously bought this product
+  "rate": 5                    // The rate value, ranging from 1-5
 }
 ```
 
@@ -85,10 +83,10 @@ In this endpoint, list of comments will be displayed, example:
 
 ```javascript
 {
-"id": 10, // Identifier of the persisted comment
-"content": "The comment content", // The comment  content
-"status": "PENDING",  // The comment status, possible values are `PENDING`, `VERIFIED`, `REJECTED`
-"date": 1616151820000 // The EPOCH of the comment submision date
+  "id": 10,                            // Identifier of the persisted comment
+  "content": "The comment content",    // The comment  content
+  "status": "PENDING",                 // The comment status, possible values are `PENDING`, `VERIFIED`, `REJECTED`
+  "date": 1616151820000                // The EPOCH of the comment submision date
 }
 ```
 
@@ -100,7 +98,7 @@ This endpoint will be used to verify or reject a comment (By an admin user)
 The body payload has a single `decision` the attribute:
 ```javascript
 {
-"decision": "VERIFIED" // Possible values are `PENDING`, `VERIFIED`, `REJECTED`
+  "decision": "VERIFIED"        // Possible values are `PENDING`, `VERIFIED`, `REJECTED`
 }
 ```
 
@@ -113,10 +111,10 @@ In this endpoint, list of rates will be displayed, example:
 
 ```javascript
 {
-"id": 10, // Identifier of the persisted rate
-"rate": 3 , // The rate value ranging from 1-5
-"status": "PENDING",  // The rate status, possible values are `PENDING`, `VERIFIED`, `REJECTED`
-"date": 1616151820000 // The EPOCH of the rate submision date
+  "id": 10,                            // Identifier of the persisted rate
+  "rate": 3 ,                          // The rate value ranging from 1-5
+  "status": "PENDING",                 // The rate status, possible values are `PENDING`, `VERIFIED`, `REJECTED`
+  "date": 1616151820000                // The EPOCH of the rate submision date
 }
 ```
 
@@ -128,7 +126,7 @@ This endpoint will be used to verify or reject a user `rate` (By an admin user)
 The body payload has a single `decision` the attribute:
 ```javascript
 {
-"decision": "VERIFIED" // Possible values are `PENDING`, `VERIFIED`, `REJECTED`
+  "decision": "VERIFIED"                // Possible values are `PENDING`, `VERIFIED`, `REJECTED`
 }
 ```
 
